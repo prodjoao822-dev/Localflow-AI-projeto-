@@ -1,0 +1,27 @@
+# Pastas locais que não queremos subir
+antigravity (prompts)/
+
+# Arquivos de ambiente e senhas (CRÍTICO)
+.env
+.env.*
+*.pem
+
+# Dependências (Node.js / Python)
+node_modules/
+__pycache__/
+venv/
+env/
+.Python
+
+# Arquivos de log e banco de dados local
+*.log
+*.sqlite3
+
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Pastas de build
+dist/
+build/
+.next/

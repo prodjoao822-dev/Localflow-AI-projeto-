@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style> body { margin: 0; background: #1F2933; } * { box-sizing: border-box; } </style>
+</helmet>
+
+<div style="display:flex; width:100%; height:100vh; min-width:960px; background:#1F2933; color:#E5E7EB; font-family:'IBM Plex Sans', sans-serif; overflow:hidden;">
+
+  <!-- SIDEBAR -->
+  <div style="flex:0 0 200px; display:flex; flex-direction:column; background:#161B22; border-right:1px solid #262F3A; padding:22px 16px;">
+    <div style="display:flex; align-items:center; gap:10px; padding:0 8px 26px 8px;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3C7 3 4 6 4 10c0 3 1.8 5.3 4.5 6.4L12 21l1-3.2c3.6-.6 6-3.4 6-7.8 0-4-3-7-7-7z" stroke="#22C55E" stroke-width="1.5"/><path d="M8.5 10.5h7M9 13h5" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:18px; font-weight:800; color:#F5F5F5;">LocalFlow <span style="color:#22C55E;">AI</span></div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:2px; flex:1;">
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span style="font-size:14px; font-weight:500;">Dashboard</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; background:rgba(34,197,94,0.12); color:#22C55E; position:relative;">
+        <div style="position:absolute; left:-16px; top:6px; bottom:6px; width:3px; background:#22C55E; border-radius:0 3px 3px 0;"></div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="17" cy="9" r="2.3" stroke="currentColor" stroke-width="1.6"/><path d="M15.2 14.8c2.4.3 4.3 2.1 4.3 5.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span style="font-size:14px; font-weight:600;">Clientes</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3l7.5 4.3v9.4L12 21l-7.5-4.3V7.3L12 3z" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 7.3L12 11.6l7.5-4.3M12 11.6V21" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span style="font-size:14px; font-weight:500;">Produtos e Serviços</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 3.5h9l3 3V21H6V3.5z" stroke="currentColor" stroke-width="1.6"/><path d="M9 9h6M9 12.5h6M9 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span style="font-size:14px; font-weight:500;">Orçamentos</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 5.5h16v10H9.5L5.5 19v-3.5H4v-10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span style="font-size:14px; font-weight:500;">Atendimentos</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 8l8-4 8 4-8 4-8-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 12l8 4 8-4M4 16l8 4 8-4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span style="font-size:14px; font-weight:500;">Operação</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 3v4M15 3v4M6 9h4v4a2 2 0 002 2 2 2 0 002-2V9h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span style="font-size:14px; font-weight:500;">Integrações</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.8" stroke="currentColor" stroke-width="1.6"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span style="font-size:14px; font-weight:500;">Configurações</span>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; padding:12px 8px; border-top:1px solid #262F3A;">
+      <div style="width:32px; height:32px; border-radius:50%; background:rgba(34,197,94,0.18); color:#22C55E; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700;">A</div>
+      <div style="flex:1;"><div style="font-size:13px; font-weight:600; color:#E5E7EB;">Admin</div><div style="font-size:11.5px; color:#6B7684;">admin@localflow.ai</div></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div style="flex:1; display:flex; flex-direction:column; min-width:0; overflow:hidden;">
+    <div style="padding:22px 32px; border-bottom:1px solid #262F3A;">
+      <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:24px; font-weight:800; color:#F5F5F5;">Clientes</div>
+      <div style="font-size:13.5px; color:#8B96A5; margin-top:4px;">Cadastro e histórico dos clientes do seu negócio</div>
+    </div>
+
+    <div style="flex:1; display:flex; min-height:0; overflow:auto; padding:24px 32px; gap:24px;">
+
+      <!-- FORM -->
+      <div style="flex:0 0 340px; background:#242E38; border:1px solid #37424F; border-radius:12px; padding:22px; align-self:flex-start;">
+        <div style="font-size:15px; font-weight:700; color:#F5F5F5; margin-bottom:16px;">Novo cliente</div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div>
+            <label style="display:block; font-size:12.5px; font-weight:600; color:#B7C0CC; margin-bottom:6px;">Nome</label>
+            <input value="{{ formName }}" oninput="{{ onFormName }}" placeholder="Nome completo" style="width:100%; background:#1B242D; border:1px solid #37424F; border-radius:8px; padding:10px 12px; color:#E5E7EB; font-size:13.5px; font-family:inherit; outline:none;"/>
+          </div>
+          <div>
+            <label style="display:block; font-size:12.5px; font-weight:600; color:#B7C0CC; margin-bottom:6px;">Telefone</label>
+            <input value="{{ formPhone }}" oninput="{{ onFormPhone }}" placeholder="(11) 90000-0000" style="width:100%; background:#1B242D; border:1px solid #37424F; border-radius:8px; padding:10px 12px; color:#E5E7EB; font-size:13.5px; font-family:inherit; outline:none;"/>
+          </div>
+          <div>
+            <label style="display:block; font-size:12.5px; font-weight:600; color:#B7C0CC; margin-bottom:6px;">Observações / histórico</label>
+            <textarea value="{{ formNotes }}" oninput="{{ onFormNotes }}" placeholder="Preferências, veículos, histórico de compras…" rows="4" style="width:100%; background:#1B242D; border:1px solid #37424F; border-radius:8px; padding:10px 12px; color:#E5E7EB; font-size:13.5px; font-family:inherit; outline:none; resize:vertical;"></textarea>
+          </div>
+          <button onclick="{{ addClient }}" style="padding:11px; background:#22C55E; border:none; border-radius:8px; color:#0F1712; font-size:13.5px; font-weight:700; font-family:inherit; cursor:pointer; margin-top:4px;">Cadastrar cliente</button>
+        </div>
+      </div>
+
+      <!-- LIST -->
+      <div style="flex:1; min-width:0; display:flex; flex-direction:column; min-height:0;">
+        <input value="{{ search }}" oninput="{{ onSearch }}" placeholder="Buscar por nome ou telefone…" style="width:100%; max-width:360px; background:#26303B; border:1px solid #37424F; border-radius:8px; padding:10px 13px; color:#E5E7EB; font-size:13.5px; font-family:inherit; outline:none; margin-bottom:14px;"/>
+
+        <div style="flex:1; overflow-y:auto; border:1px solid #2E3844; border-radius:12px;">
+          <div style="display:grid; grid-template-columns:1.3fr 1fr 2fr; padding:12px 18px; border-bottom:1px solid #2E3844; background:#1D2530;">
+            <span style="font-size:12px; font-weight:600; color:#8B96A5;">Nome</span>
+            <span style="font-size:12px; font-weight:600; color:#8B96A5;">Telefone</span>
+            <span style="font-size:12px; font-weight:600; color:#8B96A5;">Observações</span>
+          </div>
+          <sc-for list="{{ clients }}" as="c" hint-placeholder-count="5">
+            <div style="display:grid; grid-template-columns:1.3fr 1fr 2fr; padding:14px 18px; border-bottom:1px solid #2E3844; align-items:center;">
+              <span style="font-size:13.5px; font-weight:600; color:#F0F2F5;">{{ c.name }}</span>
+              <span style="font-size:13px; color:#B7C0CC;">{{ c.phone }}</span>
+              <span style="font-size:12.5px; color:#8B96A5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ c.notes }}</span>
+            </div>
+          </sc-for>
+          <sc-if value="{{ emptyResults }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:32px; text-align:center; font-size:13px; color:#6B7684;">Nenhum cliente encontrado.</div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function seedClients() {
+  return [
+    { id: 1, name: 'Carlos Mendes', phone: '(11) 99876-5432', notes: 'Cliente frequente, revisões semestrais no HB20.' },
+    { id: 2, name: 'Fernanda Ribeiro', phone: '(11) 98212-3390', notes: 'Prefere contato por WhatsApp após 18h.' },
+    { id: 3, name: 'Marina Souza', phone: '(11) 96633-4420', notes: 'Compra pastilhas de freio a cada 6 meses.' },
+    { id: 4, name: 'Diego Alves', phone: '(11) 99011-2287', notes: 'Indicado por Carlos Mendes.' },
+    { id: 5, name: 'Renata Costa', phone: '(11) 98877-6541', notes: 'Cliente satisfeita, último serviço concluído em 25/05.' },
+    { id: 6, name: 'João Batista', phone: '(11) 97122-9034', notes: 'Sem retorno desde 20/05.' },
+  ];
+}
+
+class Component extends DCLogic {
+  state = {
+    clients: seedClients(),
+    search: '',
+    formName: '', formPhone: '', formNotes: '',
+  };
+
+  onSearch(e) { this.setState({ search: e.target.value }); }
+  onFormName(e) { this.setState({ formName: e.target.value }); }
+  onFormPhone(e) { this.setState({ formPhone: e.target.value }); }
+  onFormNotes(e) { this.setState({ formNotes: e.target.value }); }
+
+  addClient() {
+    const name = this.state.formName.trim();
+    if (!name) return;
+    this.setState(s => ({
+      clients: [{ id: Date.now(), name, phone: s.formPhone.trim() || '—', notes: s.formNotes.trim() || '—' }, ...s.clients],
+      formName: '', formPhone: '', formNotes: '',
+    }));
+  }
+
+  renderVals() {
+    const q = this.state.search.trim().toLowerCase();
+    const clients = this.state.clients.filter(c => !q || c.name.toLowerCase().includes(q) || c.phone.toLowerCase().includes(q));
+    return {
+      clients, emptyResults: clients.length === 0,
+      search: this.state.search, onSearch: (e) => this.onSearch(e),
+      formName: this.state.formName, formPhone: this.state.formPhone, formNotes: this.state.formNotes,
+      onFormName: (e) => this.onFormName(e), onFormPhone: (e) => this.onFormPhone(e), onFormNotes: (e) => this.onFormNotes(e),
+      addClient: () => this.addClient(),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

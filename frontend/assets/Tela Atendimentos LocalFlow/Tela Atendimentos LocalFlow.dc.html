@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #1F2933; }
+  * { box-sizing: border-box; }
+  ::selection { background: rgba(34,197,94,0.35); }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+</style>
+</helmet>
+
+<div style="display:flex; width:100%; height:100vh; min-width:960px; background:#1F2933; color:#E5E7EB; font-family:'IBM Plex Sans', sans-serif; overflow:hidden;">
+
+  <!-- SIDEBAR -->
+  <div style="flex:0 0 200px; display:flex; flex-direction:column; background:#161B22; border-right:1px solid #262F3A; padding:22px 16px;">
+    <div style="display:flex; align-items:center; gap:10px; padding:0 8px 26px 8px;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3C7 3 4 6 4 10c0 3 1.8 5.3 4.5 6.4L12 21l1-3.2c3.6-.6 6-3.4 6-7.8 0-4-3-7-7-7z" stroke="#22C55E" stroke-width="1.5"/>
+        <path d="M8.5 10.5h7M9 13h5" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:18px; font-weight:800; color:#F5F5F5;">LocalFlow <span style="color:#22C55E;">AI</span></div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:2px; flex:1;">
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span style="font-size:14px; font-weight:500;">Dashboard</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="17" cy="9" r="2.3" stroke="currentColor" stroke-width="1.6"/><path d="M15.2 14.8c2.4.3 4.3 2.1 4.3 5.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span style="font-size:14px; font-weight:500;">Clientes</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3l7.5 4.3v9.4L12 21l-7.5-4.3V7.3L12 3z" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 7.3L12 11.6l7.5-4.3M12 11.6V21" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span style="font-size:14px; font-weight:500;">Produtos e Serviços</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 3.5h9l3 3V21H6V3.5z" stroke="currentColor" stroke-width="1.6"/><path d="M9 9h6M9 12.5h6M9 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span style="font-size:14px; font-weight:500;">Orçamentos</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; background:rgba(34,197,94,0.12); color:#22C55E; position:relative;">
+        <div style="position:absolute; left:-16px; top:6px; bottom:6px; width:3px; background:#22C55E; border-radius:0 3px 3px 0;"></div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 5.5h16v10H9.5L5.5 19v-3.5H4v-10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span style="font-size:14px; font-weight:600;">Atendimentos</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 8l8-4 8 4-8 4-8-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 12l8 4 8-4M4 16l8 4 8-4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span style="font-size:14px; font-weight:500;">Operação</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 3v4M15 3v4M6 9h4v4a2 2 0 002 2 2 2 0 002-2V9h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span style="font-size:14px; font-weight:500;">Integrações</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; color:#5B6675; cursor:default;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.8" stroke="currentColor" stroke-width="1.6"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span style="font-size:14px; font-weight:500;">Configurações</span>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:10px; padding:12px 8px; border-top:1px solid #262F3A;">
+      <div style="width:32px; height:32px; border-radius:50%; background:rgba(34,197,94,0.18); color:#22C55E; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700;">A</div>
+      <div style="flex:1;">
+        <div style="font-size:13px; font-weight:600; color:#E5E7EB;">Admin</div>
+        <div style="font-size:11.5px; color:#6B7684;">admin@localflow.ai</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="color:#6B7684;"><path d="M15 17l5-5-5-5M20 12H9M13 5H5a1 1 0 00-1 1v12a1 1 0 001 1h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div style="flex:1; display:flex; flex-direction:column; min-width:0; overflow:hidden;">
+
+    <!-- TOP BAR -->
+    <div style="padding:22px 32px 18px 32px; border-bottom:1px solid #262F3A;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:24px; font-weight:800; color:#F5F5F5;">Atendimentos</div>
+          <div style="font-size:13.5px; color:#8B96A5; margin-top:4px; max-width:46ch;">Conversas e interações com clientes via WhatsApp, já triadas pela IA</div>
+        </div>
+        <div style="display:flex; gap:10px; flex-shrink:0; flex-wrap:wrap;">
+          <button onclick="{{ refresh }}" style="display:flex; align-items:center; gap:8px; padding:9px 16px; background:#26303B; border:1px solid #37424F; border-radius:8px; color:#E5E7EB; font-size:13.5px; font-weight:600; font-family:inherit; cursor:pointer;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="transform:{{ refreshSpin }};"><path d="M4 12a8 8 0 0113.7-5.7M20 12a8 8 0 01-13.7 5.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17 4v4h-4M7 20v-4h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Atualizar
+          </button>
+          <button style="display:flex; align-items:center; gap:8px; padding:9px 16px; background:#22C55E; border:none; border-radius:8px; color:#0F1712; font-size:13.5px; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap; flex-shrink:0;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Novo manual
+          </button>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:20px;">
+        <div style="padding:14px 16px; background:rgba(251,113,133,0.08); border:1px solid rgba(251,113,133,0.25); border-radius:10px;">
+          <div style="font-family:'Plus Jakarta Sans',sans-serif; font-size:22px; font-weight:800; color:#FB7185;">{{ acaoCount }}</div>
+          <div style="font-size:12.5px; color:#B7C0CC; margin-top:2px;">Precisam de ação</div>
+        </div>
+        <div style="padding:14px 16px; background:#26303B; border:1px solid #37424F; border-radius:10px;">
+          <div style="font-family:'Plus Jakarta Sans',sans-serif; font-size:22px; font-weight:800; color:#60A5FA;">{{ atendimentoCount }}</div>
+          <div style="font-size:12.5px; color:#B7C0CC; margin-top:2px;">Em atendimento</div>
+        </div>
+        <div style="padding:14px 16px; background:#26303B; border:1px solid #37424F; border-radius:10px;">
+          <div style="font-family:'Plus Jakarta Sans',sans-serif; font-size:22px; font-weight:800; color:#FBBF24;">{{ aguardandoCount }}</div>
+          <div style="font-size:12.5px; color:#B7C0CC; margin-top:2px;">Aguardando cliente</div>
+        </div>
+        <div style="padding:14px 16px; background:#26303B; border:1px solid #37424F; border-radius:10px;">
+          <div style="font-family:'Plus Jakarta Sans',sans-serif; font-size:22px; font-weight:800; color:#94A3B8;">{{ finalCount }}</div>
+          <div style="font-size:12.5px; color:#B7C0CC; margin-top:2px;">Finalizados / Perdidos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 COLUMNS -->
+    <div style="flex:1; display:flex; min-height:0; overflow-x:auto; overflow-y:hidden;">
+
+<!-- COLUMN 1: QUEUE -->
+      <div style="flex:0 0 280px; display:flex; flex-direction:column; border-right:1px solid #262F3A; overflow-y:auto; padding:16px 14px 24px 14px;">
+        <sc-for list="{{ groups }}" as="group" hint-placeholder-count="4">
+          <div style="margin-bottom:22px;">
+            <div style="display:flex; align-items:center; gap:8px; padding:0 4px 10px 4px;">
+              <span style="font-size:13px; font-weight:700; color:#D4DAE2;">{{ group.label }}</span>
+              <span style="font-size:11.5px; font-weight:600; color:#8B96A5; background:#26303B; border-radius:20px; padding:1px 8px;">{{ group.count }}</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <sc-for list="{{ group.items }}" as="conv" hint-placeholder-count="2">
+                <div onclick="{{ conv.select }}" style="display:flex; gap:10px; padding:12px; border-radius:10px; background:{{ conv.cardBg }}; border:1px solid {{ conv.cardBorder }}; border-left:3px solid {{ conv.intentBorder }}; cursor:pointer;">
+                  <div style="flex:0 0 34px; height:34px; border-radius:50%; background:#1D2A22; display:flex; align-items:center; justify-content:center;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3C7 3 4 6 4 10c0 3 1.8 5.3 4.5 6.4L12 21l1-3.2c3.6-.6 6-3.4 6-7.8 0-4-3-7-7-7z" stroke="#22C55E" stroke-width="1.6"/></svg>
+                  </div>
+                  <div style="flex:1; min-width:0;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                      <div style="display:flex; align-items:center; gap:6px; min-width:0;">
+                        <span style="width:7px; height:7px; border-radius:50%; background:{{ conv.intentColor }}; flex-shrink:0;"></span>
+                        <span style="font-size:13.5px; font-weight:600; color:#F0F2F5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ conv.name }}</span>
+                      </div>
+                      <span style="font-size:11px; color:#7C8794; flex-shrink:0;">{{ conv.lastTime }}</span>
+                    </div>
+                    <div style="font-size:12.5px; color:#9AA4B1; margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ conv.lastMessage }}</div>
+                    <div style="display:flex; align-items:center; gap:6px; margin-top:8px;">
+                      <span style="font-size:11px; font-weight:600; padding:2px 8px; border-radius:5px; background:{{ conv.tagBg }}; color:{{ conv.tagColor }};">{{ conv.tagLabel }}</span>
+                      <sc-if value="{{ conv.aiInteracted }}" hint-placeholder-val="{{ true }}">
+                        <span style="display:flex; align-items:center; gap:3px; font-size:11px; font-weight:600; padding:2px 7px; border-radius:5px; background:rgba(167,139,250,0.16); color:#C4B5FD;">
+                          <svg width="9" height="9" viewBox="0 0 24 24" fill="#C4B5FD"><path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6L12 2z"/></svg>
+                          IA
+                        </span>
+                      </sc-if>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- COLUMN 2: THREAD -->
+      <div style="flex:1; min-width:380px; display:flex; flex-direction:column; border-right:1px solid #262F3A; min-height:0;">
+        <div style="padding:18px 24px; border-bottom:1px solid #262F3A; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1 1 auto;">
+            <div style="flex:0 0 38px; height:38px; border-radius:50%; background:#1D2A22; display:flex; align-items:center; justify-content:center;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3C7 3 4 6 4 10c0 3 1.8 5.3 4.5 6.4L12 21l1-3.2c3.6-.6 6-3.4 6-7.8 0-4-3-7-7-7z" stroke="#22C55E" stroke-width="1.6"/></svg>
+            </div>
+            <div style="min-width:0; overflow:hidden;">
+              <div style="font-size:15px; font-weight:700; color:#F5F5F5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ selected.name }}</div>
+              <div style="font-size:12px; color:#8B96A5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">WhatsApp · {{ selected.phone }}</div>
+            </div>
+            <span style="font-size:11px; font-weight:600; padding:3px 9px; border-radius:5px; background:{{ selected.tagBg }}; color:{{ selected.tagColor }}; margin-left:8px; flex-shrink:0; white-space:nowrap;">{{ selected.tagLabel }}</span>
+          </div>
+          <sc-if value="{{ selected.showAssume }}" hint-placeholder-val="{{ false }}">
+            <button onclick="{{ assume }}" style="flex-shrink:0; display:flex; align-items:center; gap:7px; padding:9px 16px; background:#22C55E; border:none; border-radius:8px; color:#0F1712; font-size:13px; font-weight:700; font-family:inherit; cursor:pointer;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="#0F1712" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Assumir conversa
+            </button>
+          </sc-if>
+          <sc-if value="{{ selected.showAssumedTag }}" hint-placeholder-val="{{ false }}">
+            <div style="flex-shrink:0; display:flex; align-items:center; gap:6px; font-size:12.5px; color:#8B96A5;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="#22C55E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Assumida por <span style="color:#D4DAE2; font-weight:600;">{{ selected.assumedBy }}</span>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="flex:1; overflow-y:auto; padding:22px 24px; display:flex; flex-direction:column; gap:14px;">
+          <sc-for list="{{ selected.messages }}" as="msg" hint-placeholder-count="4">
+            <div style="display:flex; flex-direction:column; align-items:{{ msg.alignItems }}; max-width:70%; align-self:{{ msg.alignSelf }};">
+              <sc-if value="{{ msg.hasTag }}" hint-placeholder-val="{{ false }}">
+                <span style="display:flex; align-items:center; gap:3px; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:5px; background:{{ msg.tagBg }}; color:{{ msg.tagColor }}; margin-bottom:4px;">
+                  <sc-if value="{{ msg.isAi }}" hint-placeholder-val="{{ false }}">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="{{ msg.tagColor }}"><path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6L12 2z"/></svg>
+                  </sc-if>
+                  {{ msg.tagLabel }}
+                </span>
+              </sc-if>
+              <div style="padding:10px 14px; border-radius:12px; background:{{ msg.bubbleBg }}; border:{{ msg.bubbleBorder }}; color:#E5E7EB; font-size:13.5px; line-height:1.5;">{{ msg.text }}</div>
+              <span style="font-size:10.5px; color:#6B7684; margin-top:4px;">{{ msg.time }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:16px 24px; border-top:1px solid #262F3A; display:flex; gap:10px; align-items:center;">
+          <input value="{{ composeText }}" oninput="{{ onCompose }}" onkeydown="{{ onComposeKey }}" placeholder="Escreva uma mensagem…" style="flex:1; background:#26303B; border:1px solid #37424F; border-radius:9px; padding:11px 14px; color:#E5E7EB; font-size:13.5px; font-family:inherit; outline:none;"/>
+          <button onclick="{{ send }}" style="flex-shrink:0; width:40px; height:40px; border-radius:9px; background:#22C55E; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20l16-8L4 4v6l10 2-10 2v6z" fill="#0F1712"/></svg>
+          </button>
+        </div>
+      </div>
+
+<!-- COLUMN 3: CONTEXT -->
+      <div style="flex:0 0 280px; display:flex; flex-direction:column; overflow-y:auto; padding:22px 20px; gap:22px;">
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#8B96A5; margin-bottom:8px;">Cliente</div>
+          <div style="font-size:15px; font-weight:700; color:#F5F5F5;">{{ selected.name }}</div>
+          <div style="display:flex; align-items:center; gap:6px; margin-top:6px; font-size:13px; color:#B7C0CC; white-space:nowrap;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><path d="M6 3h4l1.5 4.5-2.3 1.7a12 12 0 005.6 5.6l1.7-2.3L21 14v4a2 2 0 01-2 2C10.5 20 4 13.5 4 5a2 2 0 012-2z" stroke="currentColor" stroke-width="1.5"/></svg>
+            {{ selected.phone }}
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#8B96A5; margin-bottom:8px;">Canal</div>
+          <div style="display:flex; align-items:center; gap:7px; font-size:13.5px; color:#E5E7EB; font-weight:600;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3C7 3 4 6 4 10c0 3 1.8 5.3 4.5 6.4L12 21l1-3.2c3.6-.6 6-3.4 6-7.8 0-4-3-7-7-7z" stroke="#22C55E" stroke-width="1.6"/></svg>
+            WhatsApp
+          </div>
+        </div>
+
+        <div style="padding:14px; border-radius:10px; background:rgba(139,92,246,0.08); border:1px solid rgba(139,92,246,0.25);">
+          <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#C4B5FD"><path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6L12 2z"/></svg>
+            <span style="font-size:12.5px; font-weight:700; color:#C4B5FD;">Resumo da IA</span>
+          </div>
+          <div style="font-size:13px; line-height:1.55; color:#D4DAE2;">{{ selected.aiSummary }}</div>
+        </div>
+
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#8B96A5; margin-bottom:8px;">Atualizar status</div>
+          <select value="{{ selected.statusKey }}" onchange="{{ onStatusChange }}" style="width:100%; background:#26303B; border:1px solid #37424F; border-radius:8px; padding:10px 12px; color:#E5E7EB; font-size:13.5px; font-family:inherit; outline:none;">
+            <option value="acao">Precisa de ação</option>
+            <option value="atendimento">Em atendimento</option>
+            <option value="aguardando">Aguardando cliente</option>
+            <option value="final_ok">Finalizado</option>
+            <option value="final_perdido">Perdido</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const STATUS_META = {
+  acao: { tagLabel: 'Precisa de ação', tagBg: 'rgba(251,113,133,0.14)', tagColor: '#FB7185' },
+  atendimento: { tagLabel: 'Em atendimento', tagBg: 'rgba(96,165,250,0.14)', tagColor: '#60A5FA' },
+  aguardando: { tagLabel: 'Aguardando cliente', tagBg: 'rgba(251,191,36,0.14)', tagColor: '#FBBF24' },
+  final_ok: { tagLabel: 'Finalizado', tagBg: 'rgba(74,222,128,0.14)', tagColor: '#4ADE80' },
+  final_perdido: { tagLabel: 'Perdido', tagBg: 'rgba(148,163,184,0.16)', tagColor: '#94A3B8' },
+};
+
+const INTENT_META = {
+  hot: { rank: 0, color: '#F97316' },
+  warm: { rank: 1, color: '#EAB308' },
+  cold: { rank: 2, color: '#64748B' },
+};
+
+function seedConversations() {
+  return [
+    {
+      id: 'carlos', name: 'Carlos Mendes', phone: '(11) 99876-5432', statusKey: 'acao', intent: 'hot',
+      aiInteracted: true, assumedBy: null,
+      aiSummary: 'Cliente trouxe o veículo para revisão. A IA confirmou a troca de óleo concluída e identificou pastilhas de freio gastas — cliente aprovou incluir a troca no orçamento. A pergunta atual sobre o carro estar pronto exige confirmação humana com a oficina.',
+      messages: [
+        { sender: 'customer', text: 'Oi, bom dia! Meu carro tá lá desde ontem pra revisão. Já ficou pronto?', time: '08:55' },
+        { sender: 'ai', text: 'Bom dia, Carlos! Vou verificar o status do seu veículo com a equipe da oficina e te retorno em poucos minutos.', time: '08:56' },
+        { sender: 'ai', text: 'Consultei aqui: a troca de óleo já foi concluída. O mecânico também identificou que as pastilhas de freio estão gastas — quer que a gente inclua a troca no orçamento?', time: '08:58' },
+        { sender: 'customer', text: 'Ah entendi. Pode sim, quero saber quanto fica.', time: '09:05' },
+        { sender: 'ai', text: 'Perfeito! Vou calcular o valor com a peça incluída e te mando em breve.', time: '09:06' },
+        { sender: 'customer', text: 'E sobre o carro, já posso ir buscar hoje?', time: '09:12' },
+      ],
+    },
+    {
+      id: 'fernanda', name: 'Fernanda Ribeiro', phone: '(11) 98212-3390', statusKey: 'acao', intent: 'hot',
+      aiInteracted: true, assumedBy: null,
+      aiSummary: 'Cliente com pneu furado, modelo HB20 2019 aro 15. A IA localizou 2 pneus compatíveis em estoque e está aguardando confirmação de horário com a equipe. Cliente pede retorno urgente hoje.',
+      messages: [
+        { sender: 'customer', text: 'Furei o pneu de novo, será que dá pra trocar hoje ainda?', time: '08:20' },
+        { sender: 'ai', text: 'Oi, Fernanda! Consigo verificar a disponibilidade pra hoje. Qual o modelo do carro e o tamanho do pneu?', time: '08:22' },
+        { sender: 'customer', text: 'É um HB20 2019, pneu aro 15.', time: '08:30' },
+        { sender: 'ai', text: 'Encontrei 2 pneus aro 15 compatíveis no estoque. Só preciso confirmar com a equipe se tem horário livre hoje — vou te avisar em breve.', time: '08:33' },
+        { sender: 'customer', text: 'Preciso de orçamento urgente pra troca de pneu, consegue hoje?', time: '08:47' },
+      ],
+    },
+    {
+      id: 'pedro', name: 'Pedro Almeida', phone: '(11) 97744-1182', statusKey: 'acao', intent: 'cold',
+      aiInteracted: false, assumedBy: null,
+      aiSummary: null,
+      messages: [
+        { sender: 'customer', text: 'Vocês fazem restauração de violão antigo?', time: '29/05' },
+      ],
+    },
+    {
+      id: 'oficina', name: 'Oficina Vitória', phone: '(11) 95500-7712', statusKey: 'atendimento', intent: 'warm',
+      aiInteracted: true, assumedBy: 'Ana P.',
+      aiSummary: 'A IA confirmou o orçamento de pintura para 3 peças e o cliente aceitou fechar o serviço. Ana assumiu a conversa para agendar o horário de entrega do veículo.',
+      messages: [
+        { sender: 'customer', text: 'Oi, vi o orçamento do serviço de pintura. Fechado nas 3 peças?', time: '09:10' },
+        { sender: 'ai', text: 'Oi! Sim, o orçamento cobre as 3 peças combinadas. Posso confirmar o agendamento pra essa semana?', time: '09:12' },
+        { sender: 'customer', text: 'Pode sim, quero fechar.', time: '09:20' },
+        { sender: 'agent', name: 'Ana P.', text: 'Oi, aqui é a Ana! Vi que você confirmou — vou agendar pra quinta às 14h, pode ser?', time: '09:28' },
+        { sender: 'customer', text: 'Pode confirmar, vamos fechar!', time: '09:30' },
+      ],
+    },
+    {
+      id: 'marina', name: 'Marina Souza', phone: '(11) 96633-4420', statusKey: 'aguardando', intent: 'warm',
+      aiInteracted: true, assumedBy: null,
+      aiSummary: 'Cliente quer comprar pastilhas de freio mas ainda não confirmou a quantidade necessária. A IA ofereceu reservar o produto assim que o cliente confirmar.',
+      messages: [
+        { sender: 'customer', text: 'Preciso de pastilha de freio, mas não sei quantos jogos ainda.', time: '30/05' },
+        { sender: 'ai', text: 'Sem problema! Quando você confirmar a quantidade, me avisa que já reservo pra você.', time: '30/05' },
+        { sender: 'customer', text: 'Vou confirmar a quantidade e te aviso!', time: '30/05' },
+      ],
+    },
+    {
+      id: 'diego', name: 'Diego Alves', phone: '(11) 99011-2287', statusKey: 'aguardando', intent: 'cold',
+      aiInteracted: true, assumedBy: null,
+      aiSummary: 'A IA informou o valor da revisão completa (R$ 280) e ofereceu agendamento. Cliente vai consultar o sócio antes de decidir.',
+      messages: [
+        { sender: 'customer', text: 'Quero saber o valor do serviço de revisão completa.', time: '28/05' },
+        { sender: 'ai', text: 'Oi, Diego! A revisão completa custa R$ 280, incluindo troca de óleo e filtros. Quer que eu já agende um horário?', time: '28/05' },
+        { sender: 'customer', text: 'Deixa eu ver com meu sócio e te falo.', time: '28/05' },
+      ],
+    },
+    {
+      id: 'renata', name: 'Renata Costa', phone: '(11) 98877-6541', statusKey: 'final_ok', intent: 'cold',
+      aiInteracted: true, assumedBy: 'Ana P.',
+      aiSummary: 'Serviço concluído com sucesso. Cliente confirmou satisfação e a IA encerrou o atendimento.',
+      messages: [
+        { sender: 'customer', text: 'Recebi o carro, ficou ótimo o serviço!', time: '25/05' },
+        { sender: 'ai', text: 'Que ótimo, Renata! Ficamos felizes que gostou. Qualquer coisa é só chamar.', time: '25/05' },
+        { sender: 'customer', text: 'Perfeito, muito obrigada!', time: '25/05' },
+      ],
+    },
+    {
+      id: 'joao', name: 'João Batista', phone: '(11) 97122-9034', statusKey: 'final_perdido', intent: 'cold',
+      aiInteracted: false, assumedBy: 'Carlos M.',
+      aiSummary: null,
+      messages: [
+        { sender: 'customer', text: 'Qual o valor da troca de embreagem?', time: '18/05' },
+        { sender: 'agent', name: 'Carlos M.', text: 'Oi João! O valor fica em torno de R$ 650, dependendo do modelo. Qual o carro?', time: '18/05' },
+        { sender: 'customer', text: 'Vou pensar e te retorno', time: '20/05' },
+      ],
+    },
+  ];
+}
+
+class Component extends DCLogic {
+  state = {
+    selectedId: 'carlos',
+    conversations: seedConversations(),
+    composeText: '',
+    refreshing: false,
+  };
+
+  select(id) { this.setState({ selectedId: id }); }
+
+  assume() {
+    this.setState(s => ({
+      conversations: s.conversations.map(c => c.id === s.selectedId ? { ...c, assumedBy: 'Você', statusKey: c.statusKey === 'acao' ? 'atendimento' : c.statusKey } : c),
+    }));
+  }
+
+  onCompose(e) { this.setState({ composeText: e.target.value }); }
+
+  onComposeKey(e) { if (e.key === 'Enter') this.send(); }
+
+  send() {
+    const text = this.state.composeText.trim();
+    if (!text) return;
+    const time = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    this.setState(s => ({
+      composeText: '',
+      conversations: s.conversations.map(c => c.id === s.selectedId ? { ...c, messages: [...c.messages, { sender: 'agent', name: 'Você', text, time }] } : c),
+    }));
+  }
+
+  onStatusChange(e) {
+    const value = e.target.value;
+    this.setState(s => ({
+      conversations: s.conversations.map(c => c.id === s.selectedId ? { ...c, statusKey: value } : c),
+    }));
+  }
+
+  refresh() {
+    this.setState({ refreshing: true });
+    setTimeout(() => this.setState({ refreshing: false }), 600);
+  }
+
+  renderVals() {
+    const conversations = this.state.conversations;
+    const selectedId = this.state.selectedId;
+
+    const decorated = conversations.map(c => {
+      const meta = STATUS_META[c.statusKey];
+      const intentMeta = INTENT_META[c.intent];
+      const last = c.messages[c.messages.length - 1];
+      const isSelected = c.id === selectedId;
+      return {
+        id: c.id, name: c.name,
+        lastMessage: last.text, lastTime: last.time,
+        aiInteracted: c.aiInteracted,
+        tagBg: meta.tagBg, tagColor: meta.tagColor, tagLabel: meta.tagLabel,
+        intentColor: intentMeta.color, intentRank: intentMeta.rank,
+        statusKey: c.statusKey,
+        cardBg: isSelected ? 'rgba(34,197,94,0.09)' : '#242E38',
+        cardBorder: isSelected ? 'rgba(34,197,94,0.5)' : '#2E3844',
+        intentBorder: intentMeta.color,
+        select: () => this.select(c.id),
+      };
+    });
+
+    const groupDefs = [
+      { key: 'acao', label: 'Precisam de ação' },
+      { key: 'atendimento', label: 'Em atendimento' },
+      { key: 'aguardando', label: 'Aguardando cliente' },
+      { key: 'final', label: 'Finalizados / Perdidos' },
+    ];
+
+    const groups = groupDefs.map(g => {
+      const items = decorated
+        .filter(c => g.key === 'final' ? (c.statusKey === 'final_ok' || c.statusKey === 'final_perdido') : c.statusKey === g.key)
+        .sort((a, b) => a.intentRank - b.intentRank);
+      return { key: g.key, label: g.label, count: items.length, items };
+    });
+
+    const selectedRaw = conversations.find(c => c.id === selectedId);
+    const selMeta = STATUS_META[selectedRaw.statusKey];
+
+    const messages = selectedRaw.messages.map(m => {
+      if (m.sender === 'customer') {
+        return { alignSelf: 'flex-start', alignItems: 'flex-start', bubbleBg: '#2D3846', bubbleBorder: '1px solid #37424F', hasTag: false, text: m.text, time: m.time };
+      }
+      if (m.sender === 'ai') {
+        return { alignSelf: 'flex-end', alignItems: 'flex-end', bubbleBg: 'rgba(139,92,246,0.20)', bubbleBorder: '1.5px dashed rgba(167,139,250,0.6)', hasTag: true, isAi: true, tagLabel: 'IA', tagBg: 'rgba(139,92,246,0.22)', tagColor: '#D8CCFB', text: m.text, time: m.time };
+      }
+      return { alignSelf: 'flex-end', alignItems: 'flex-end', bubbleBg: 'rgba(34,197,94,0.12)', bubbleBorder: '1px solid rgba(34,197,94,0.35)', hasTag: true, isAi: false, tagLabel: m.name, tagBg: 'rgba(34,197,94,0.18)', tagColor: '#4ADE80', text: m.text, time: m.time };
+    });
+
+    return {
+      groups,
+      acaoCount: groups[0].count,
+      atendimentoCount: groups[1].count,
+      aguardandoCount: groups[2].count,
+      finalCount: groups[3].count,
+      selected: {
+        name: selectedRaw.name, phone: selectedRaw.phone,
+        tagBg: selMeta.tagBg, tagColor: selMeta.tagColor, tagLabel: selMeta.tagLabel,
+        statusKey: selectedRaw.statusKey,
+        showAssume: !selectedRaw.assumedBy,
+        showAssumedTag: !!selectedRaw.assumedBy,
+        assumedBy: selectedRaw.assumedBy,
+        aiSummary: selectedRaw.aiSummary || 'A IA ainda não interagiu nesta conversa.',
+        messages,
+      },
+      composeText: this.state.composeText,
+      refreshSpin: this.state.refreshing ? 'rotate(360deg)' : 'rotate(0deg)',
+      onCompose: (e) => this.onCompose(e),
+      onComposeKey: (e) => this.onComposeKey(e),
+      send: () => this.send(),
+      assume: () => this.assume(),
+      onStatusChange: (e) => this.onStatusChange(e),
+      refresh: () => this.refresh(),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

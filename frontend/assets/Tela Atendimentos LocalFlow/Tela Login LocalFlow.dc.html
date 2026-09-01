@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style> body { margin: 0; background: #1F2933; } * { box-sizing: border-box; } </style>
+</helmet>
+
+<div style="display:flex; align-items:center; justify-content:center; width:100%; min-height:100vh; background:#1F2933; font-family:'IBM Plex Sans', sans-serif;">
+  <div style="width:100%; max-width:380px; padding:0 24px;">
+
+    <div style="display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:36px;">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+        <path d="M12 3C7 3 4 6 4 10c0 3 1.8 5.3 4.5 6.4L12 21l1-3.2c3.6-.6 6-3.4 6-7.8 0-4-3-7-7-7z" stroke="#22C55E" stroke-width="1.5"/>
+        <path d="M8.5 10.5h7M9 13h5" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:22px; font-weight:800; color:#F5F5F5;">LocalFlow <span style="color:#22C55E;">AI</span></div>
+      <div style="font-size:13px; color:#8B96A5;">Entre com sua conta para continuar</div>
+    </div>
+
+    <div style="background:#242E38; border:1px solid #37424F; border-radius:14px; padding:28px;">
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div>
+          <label style="display:block; font-size:12.5px; font-weight:600; color:#B7C0CC; margin-bottom:7px;">E-mail</label>
+          <input type="email" value="{{ email }}" oninput="{{ onEmail }}" placeholder="seuemail@negocio.com" style="width:100%; background:#1B242D; border:1px solid #37424F; border-radius:8px; padding:11px 13px; color:#E5E7EB; font-size:13.5px; font-family:inherit; outline:none;"/>
+        </div>
+        <div>
+          <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:7px;">
+            <label style="font-size:12.5px; font-weight:600; color:#B7C0CC;">Senha</label>
+            <a href="#" style="font-size:12px; color:#22C55E; text-decoration:none;">Esqueci minha senha</a>
+          </div>
+          <input type="password" value="{{ password }}" oninput="{{ onPassword }}" placeholder="••••••••" style="width:100%; background:#1B242D; border:1px solid #37424F; border-radius:8px; padding:11px 13px; color:#E5E7EB; font-size:13.5px; font-family:inherit; outline:none;"/>
+        </div>
+
+        <sc-if value="{{ showError }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12.5px; color:#FB7185; background:rgba(251,113,133,0.1); border:1px solid rgba(251,113,133,0.3); border-radius:8px; padding:9px 12px;">Preencha e-mail e senha para entrar.</div>
+        </sc-if>
+
+        <button onclick="{{ onSubmit }}" style="width:100%; padding:12px; background:#22C55E; border:none; border-radius:8px; color:#0F1712; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; margin-top:4px;">Entrar</button>
+      </div>
+    </div>
+
+    <div style="text-align:center; font-size:12px; color:#5B6675; margin-top:22px;">O cadastro de atendentes é feito pelo administrador da conta.</div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { email: '', password: '', showError: false };
+  onEmail(e) { this.setState({ email: e.target.value, showError: false }); }
+  onPassword(e) { this.setState({ password: e.target.value, showError: false }); }
+  onSubmit() {
+    if (!this.state.email.trim() || !this.state.password.trim()) { this.setState({ showError: true }); return; }
+    this.setState({ showError: false });
+  }
+  renderVals() {
+    return {
+      email: this.state.email, password: this.state.password, showError: this.state.showError,
+      onEmail: (e) => this.onEmail(e), onPassword: (e) => this.onPassword(e), onSubmit: () => this.onSubmit(),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

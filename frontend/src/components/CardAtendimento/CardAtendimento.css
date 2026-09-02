@@ -1,0 +1,112 @@
+/* src/components/CardAtendimento/CardAtendimento.css */
+
+.card-atendimento {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  background-color: #1e1e24; /* Dark mode style */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+  border: 1px solid #2a2a35;
+}
+
+.card-atendimento:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  background-color: #25252d;
+}
+
+.card-avatar-wrapper {
+  flex-shrink: 0;
+}
+
+.card-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #2a2a35;
+  border: 2px solid #3a3a48;
+}
+
+.card-content {
+  flex: 1;
+  min-width: 0; /* Previne que o texto empurre o flex container */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-nome {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f1f1f1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-tempo {
+  font-size: 0.75rem;
+  color: #8b8b9b;
+  white-space: nowrap;
+}
+
+.card-body {
+  margin: 0;
+}
+
+.card-mensagem {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #a0a0b0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Badges de Status */
+.card-status {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-aguardando {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.status-andamento {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.status-concluido {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.status-default {
+  background-color: rgba(107, 114, 128, 0.15);
+  color: #6b7280;
+}

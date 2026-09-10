@@ -1,0 +1,198 @@
+// Schema do Prisma — LocalFlow AI (Etapa 2 do roadmap)
+//
+// Decisões já confirmadas que este schema reflete:
+// - InteraçãoIA é TABELA PRÓPRIA (não embutida em Mensagem) — decisão Etapa 0.
+// - Conversa usa 4 estados (RN08) + campo separado resultadoFinal.
+// - Usuário tem primeiroAcessoPendente (troca de senha obrigatória no 1º login).
+// - Toda entidade de negócio carrega empresaId (RN04 — isolamento por Empresa).
+//
+// IDs são UUID (recomendação do planejamento) e timestamps ficam em UTC
+// (Prisma já grava em UTC por padrão).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// TENANT
+// ============================================================
+
+model Empresa {
+  id        String   @id @default(uuid())
+  nome      String
+  segmento  String?
+  status    String   @default("ativa") // 'ativa' | 'inativa'
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  usuarios       Usuario[]
+  clientesFinais ClienteFinal[]
+  conversas      Conversa[]
+  integracoes    IntegracaoWhatsApp[]
+
+  @@map("empresas")
+}
+
+model Usuario {
+  id        String   @id @default(uuid())
+  empresaId String   @map("empresa_id")
+  nome      String
+  email     String
+  telefone  String?
+  senhaHash String   @map("senha_hash")
+  perfil    String // 'admin' | 'atendente'
+  ativo     Boolean  @default(true)
+  // Troca de senha OBRIGATÓRIA no 1º login (decisão confirmada Etapa 0):
+  // o painel só libera o uso normal depois que esta flag virar false.
+  primeiroAcessoPendente Boolean @default(true) @map("primeiro_acesso_pendente")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  empresa              Empresa    @relation(fields: [empresaId], references: [id])
+  conversasResponsavel Conversa[] @relation("responsavel")
+
+  // E-mail é único DENTRO de cada empresa (não global) — permite que o mesmo
+  // e-mail exista em empresas diferentes quando virar SaaS multi-tenant.
+  @@unique([empresaId, email])
+  @@map("usuarios")
+}
+
+// ============================================================
+// CRM / DIRETÓRIO
+// ============================================================
+
+model ClienteFinal {
+  id          String   @id @default(uuid())
+  empresaId   String   @map("empresa_id")
+  nome        String
+  telefone    String // normalizado na camada de serviço (Etapa 4 decide duplicidade)
+  email       String?
+  observacoes String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  empresa   Empresa    @relation(fields: [empresaId], references: [id])
+  conversas Conversa[]
+
+  @@index([empresaId, telefone])
+  @@map("clientes_finais")
+}
+
+// ============================================================
+// INBOX / ATENDIMENTO
+// ============================================================
+
+model Conversa {
+  id             String   @id @default(uuid())
+  empresaId      String   @map("empresa_id")
+  clienteFinalId String   @map("cliente_final_id")
+  canal          String   @default("whatsapp")
+  // Chave da conversa no provedor externo, única por empresa (Etapa 6 usa isso).
+  externalConversationKey String? @map("external_conversation_key")
+
+  // RN08: 4 estados. resolvida/perdida são resultados, não estados.
+  status         String  @default("nova") // 'nova' | 'em_atendimento' | 'aguardando_cliente' | 'finalizada'
+  resultadoFinal String? @map("resultado_final") // 'resolvida' | 'perdida' — só quando status = 'finalizada'
+
+  intencao   String? // 'venda_rapida' | 'venda_sob_medida' | 'duvida' | 'faq' | 'reclamacao'
+  prioridade String? // 'alta' | 'media' | 'baixa'
+  // RN09: classificação da IA não impede correção humana — campos podem ser sobrescritos.
+
+  atendenteResponsavelId String?   @map("atendente_responsavel_id")
+  needsAction   Boolean   @default(false) @map("needs_action")
+  lastMessageAt DateTime? @map("last_message_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  empresa      Empresa       @relation(fields: [empresaId], references: [id])
+  cliente      ClienteFinal  @relation(fields: [clienteFinalId], references: [id])
+  responsavel  Usuario?      @relation("responsavel", fields: [atendenteResponsavelId], references: [id])
+  mensagens    Mensagem[]
+  interacoesIA InteracaoIA[]
+
+  @@unique([empresaId, externalConversationKey])
+  @@index([empresaId, status])
+  @@index([empresaId, lastMessageAt])
+  @@map("conversas")
+}
+
+model Mensagem {
+  id             String   @id @default(uuid())
+  empresaId      String   @map("empresa_id")
+  conversaId     String   @map("conversa_id")
+  // RN07: origem distinguível no histórico. 'sistema' entra no futuro se precisar.
+  origem         String // 'cliente' | 'ia' | 'atendente'
+  autorUsuarioId String?  @map("autor_usuario_id")
+  // ID da mensagem no provedor externo — usado para idempotência no webhook (Etapa 6).
+  externalMessageId String? @map("external_message_id")
+  texto          String
+  statusEnvio    String    @default("recebida") @map("status_envio") // 'recebida' | 'pendente' | 'enviada' | 'falha'
+  sentAt         DateTime? @map("sent_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  conversa    Conversa @relation(fields: [conversaId], references: [id])
+  // Lado oposto da relação com InteraçãoIA (quando a IA gerou esta mensagem).
+  interacoesIA InteracaoIA[]
+
+  @@unique([empresaId, externalMessageId])
+  @@index([conversaId, createdAt])
+  @@map("mensagens")
+}
+
+// ============================================================
+// AI CORE — InteraçãoIA (decisão confirmada: TABELA PRÓPRIA)
+// ============================================================
+// Por que tabela própria? Porque nem toda ação da IA gera mensagem (ex.:
+// classificação silenciosa), e misturar "decisão interna da IA" com
+// "mensagem externa" na mesma tabela tornaria auditoria e evolução
+// do AI Core mais difíceis depois.
+
+model InteracaoIA {
+  id            String   @id @default(uuid())
+  empresaId     String   @map("empresa_id")
+  conversaId    String   @map("conversa_id")
+  // Opcional: quando a IA gerou uma mensagem de fato (FAQ, espera), ligamos aqui.
+  mensagemId    String?  @map("mensagem_id")
+  // RN02: registro visível ao atendente — tipo + resumos bastam para a UI.
+  tipo          String // 'classificacao' | 'resposta_faq' | 'coleta_dado' | 'escalada' | 'mensagem_espera'
+  entradaResumo String?  @map("entrada_resumo")
+  saidaResumo   String?  @map("saida_resumo")
+  modelo        String? // ex: 'openrouter/meta-llama-3.1-8b-instruct'
+  confidence    Float?
+  metadata      Json?
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  conversa Conversa  @relation(fields: [conversaId], references: [id])
+  mensagem Mensagem? @relation(fields: [mensagemId], references: [id])
+
+  @@index([conversaId, createdAt])
+  @@map("interacoes_ia")
+}
+
+// ============================================================
+// INTEGRAÇÕES (credenciais nunca voltam para o frontend)
+// ============================================================
+
+model IntegracaoWhatsApp {
+  id            String    @id @default(uuid())
+  empresaId     String    @map("empresa_id")
+  provider      String    @default("evolution")
+  instanceName  String    @map("instance_name")
+  phoneNumber   String?   @map("phone_number")
+  status        String    @default("desconectada") // 'conectada' | 'desconectada' | 'erro'
+  // Referência segura às credenciais: o segredo vive em variável de ambiente
+  // ou cofre; aqui guardamos só o nome da referência, nunca o valor.
+  credentialsRef String?  @map("credentials_ref")
+  lastSyncAt    DateTime? @map("last_sync_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  empresa Empresa @relation(fields: [empresaId], references: [id])
+
+  @@map("integracoes_whatsapp")
+}

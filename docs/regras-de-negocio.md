@@ -49,7 +49,7 @@ Todo dado operacional pertence a uma Empresa. Consultas, comandos, eventos e men
 - O Atendente visualiza e responde Conversas, cadastra/edita Clientes Finais e altera o estado da Oportunidade.
 - Não haverá permissões diferenciadas entre Atendentes no MVP.
 - O cadastro de um Atendente é iniciado pelo Administrador, que informa os dados e define a senha inicial.
-- O comportamento de troca obrigatória da senha no primeiro acesso ainda precisa ser decidido.
+- A troca de senha é OBRIGATÓRIA no primeiro login do Atendente (confirmado): o usuário nasce com flag `primeiroAcessoPendente` e o painel só é liberado após a troca de senha.
 
 ### RN06 — Cliente Final não autentica
 
@@ -70,7 +70,11 @@ O contrato oficial adotado para o MVP possui quatro estados:
 | `aguardando_cliente` | A próxima ação depende de resposta/dado do Cliente Final |
 | `finalizada` | Atendimento encerrado; exige um resultado `resolvida` ou `perdida` |
 
-`resolvida` e `perdida` são resultados de finalização, não estados paralelos. A UI e a API devem evitar a contradição entre quatro estados e uma enumeração com cinco estados. A semântica exata da representação técnica de resultado continua registrada como decisão pendente.
+`nova`, `em_atendimento` e `aguardando_cliente` são estados. `finalizada` é o estado de encerramento e exige um resultado `resolvida` ou `perdida`, representado no campo separado `resultadoFinal`. A UI e a API evitam a contradição entre quatro estados e uma enumeração com cinco estados.
+
+### RN08.1 — Finalizada não reabre automaticamente (confirmado)
+
+Uma Conversa `finalizada` NÃO reabre automaticamente. Uma nova mensagem do mesmo Cliente Final depois de `finalizada` cria uma Conversa nova. O Atendente tem uma ação manual explícita para "reabrir/mesclar" a Conversa anterior caso identifique que é o mesmo assunto. Não há detecção automática de "mesmo assunto" no MVP — reabertura é decisão humana.
 
 ### RN09 — Classificação não substitui decisão humana
 
@@ -82,7 +86,7 @@ Mensagens enviadas pelo Atendente ou pela IA ao Cliente Final devem ser registra
 
 ## 3. Regras e escopo ainda não fechados
 
-- Fluxo completo de cadastro de funcionário, incluindo convite, primeiro acesso, redefinição e expiração da senha inicial: **PENDENTE**.
+- Fluxo completo de cadastro de funcionário: senha inicial definida pelo Admin + troca obrigatória no primeiro login confirmados. Expiração da senha inicial, convite/ativação por e-mail e redefinição: **PENDENTE**.
 - Follow-up automático: **PENDENTE** e fora do núcleo do MVP até definição.
 - Atores específicos de nicho: **PENDENTE**; não criar papéis de nicho no núcleo.
 - Fluxos de venda rápida e sob medida: hipóteses ainda não validadas; não tratá-los como regras universais.
@@ -99,4 +103,4 @@ O dashboard futuro de faturamento, produtos mais pedidos, devoluções e indicad
 - Requirements v0.2: RN01–RN03, RF01–RF18, atores, MVP e fora de escopo.
 - arquitetura v0.1: limites de módulos, RN01 no backend, isolamento de tenant e fluxo de mensagem.
 - telas: Cliente Final, Conversa, Atendente, integração WhatsApp e estados operacionais.
-- código atual: `frontend/src/mocks/dadosMock.js` expressa parte do contrato novo; `frontend/src/mocks/atendimentosMock.js` é legado desalinhado.
+- código atual: `frontend/src/mocks/dadosMock.js` expressa parte do contrato novo; `frontend/src/mocks/atendimentosMock.js` é legado desalinhado (aposentado na Etapa 1 do roadmap).

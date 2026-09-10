@@ -10,22 +10,22 @@ Prioridade:
 
 ### 1.1 Representação de finalização da oportunidade
 
-Foi escolhido o conjunto funcional de quatro estados: `nova`, `em_atendimento`, `aguardando_cliente` e `finalizada`, com resultado `resolvida` ou `perdida`. Falta decidir a representação persistida e as transições permitidas:
+Foi escolhido o conjunto funcional de quatro estados: `nova`, `em_atendimento`, `aguardando_cliente` e `finalizada`, com resultado `resolvida` ou `perdida`.
 
-- `resultadoFinal` separado?
-- `finalizada` permite reabertura?
-- quem pode marcar `perdida` e com qual motivo?
+**CONFIRMADO (Etapa 0 fechada):**
+
+- `resultadoFinal` separado: uma Conversa `finalizada` carrega um campo `resultadoFinal` com valor `resolvida` ou `perdida`. `resolvida` e `perdida` são resultados de finalização, não estados paralelos (RN08).
+- Reabertura: uma Conversa `finalizada` NÃO reabre automaticamente. Uma nova mensagem do mesmo Cliente Final depois de `finalizada` cria uma Conversa nova. O Atendente tem uma ação manual explícita para "reabrir/mesclar" a Conversa anterior caso identifique que é o mesmo assunto. NÃO implementar detecção automática de "mesmo assunto" — isso é decisão humana no MVP.
+
+**AINDA PENDENTE:**
+
+- quem pode marcar `perdida` e com qual motivo.
 
 Impacta Prisma, filtros, contagens, frontend e API.
 
 ### 1.2 Interação de IA
 
-A arquitetura original deixou duas opções:
-
-1. tabela própria relacionada à Conversa e opcionalmente à Mensagem;
-2. registro embutido em Mensagem/Conversa.
-
-Não decidir sozinho. A tabela própria é a alternativa preferida no planejamento, mas continua pendente.
+**CONFIRMADO (Etapa 0 fechada):** tabela própria `InteracaoIA`, relacionada à Conversa e opcionalmente à Mensagem (a alternativa preferida no planejamento). Confirmado pelo dono do projeto.
 
 ### 1.3 Fluxos de venda rápida e sob medida
 
@@ -33,9 +33,10 @@ Continuam hipóteses. É necessário entrevistar a Casa da Soleira e outras empr
 
 ### 1.4 Cadastro de atendente e primeiro acesso
 
-Foi decidido que o Administrador informa os dados e define a senha inicial. Ainda falta decidir:
+**CONFIRMADO (Etapa 0 fechada):** o Administrador informa os dados e define a senha inicial, e a troca de senha é OBRIGATÓRIA no primeiro login do Atendente. O modelo de usuário recebe um campo/flag (ex.: `primeiroAcessoPendente`) que força o fluxo de troca de senha antes de liberar o uso normal do painel.
 
-- o Atendente é obrigado a trocar a senha no primeiro login?
+**AINDA PENDENTE:**
+
 - existe expiração da senha inicial?
 - há convite/ativação por e-mail?
 - como ocorre redefinição?
@@ -107,7 +108,7 @@ O frontend já possui componentes e serviços de protótipo, mas rotas/nav e tel
 
 | Pergunta | Estado |
 |---|---|
-| Cadastro de funcionário | Parcialmente resolvida: Admin define senha inicial; ciclo de vida restante pendente |
+| Cadastro de funcionário | Resolvido: Admin define senha inicial + troca obrigatória no primeiro login (flag `primeiroAcessoPendente`); expiração/convite/redefinição seguem pendentes |
 | Follow-up automático | Pendente, fora do MVP |
 | Escalada sem atendente | Resolvida: fila geral + notificação a Atendentes ativos |
 | Atores de nicho | Pendente para extensão; nenhum no núcleo |
@@ -115,7 +116,7 @@ O frontend já possui componentes e serviços de protótipo, mas rotas/nav e tel
 | Cenário dos quatro dias | Pendente de entrevista |
 | Meta de resposta IA | Resolvida como referência de até 10 segundos |
 | Tecnologia de fila | Resolvida: Redis + BullMQ |
-| Interação IA | Pendente entre tabela própria e registro embutido |
+| Interação IA | Resolvida: tabela própria `InteracaoIA` |
 | Reuso do Agente IA | Pendente: contrato/distribuição para WhatsApp e uso interno |
 
 ## 6. Sugestões novas, não validadas

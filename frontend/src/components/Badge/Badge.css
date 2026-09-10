@@ -1,0 +1,18 @@
+.lf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.lf-badge-neutral { background: var(--neutral-soft); color: var(--text-secondary); }
+.lf-badge-accent  { background: var(--accent-soft);  color: #1763b3; }
+.lf-badge-success { background: var(--success-soft); color: var(--success); }
+.lf-badge-warning { background: var(--warning-soft); color: #7a5600; }
+.lf-badge-danger  { background: var(--danger-soft);  color: var(--danger); }
+.lf-badge-ia      { background: var(--ia-soft);      color: #6336c5; }

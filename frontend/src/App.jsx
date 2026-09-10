@@ -1,43 +1,65 @@
-import { useState, useEffect } from 'react'; 
-import { atendimentoService } from './services/atendimentoService';
-import CardAtendimento from './components/CardAtendimento/CardAtendimento';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { useAuth } from './context/useAuth';
+import RotaProtegida from './components/RotaProtegida/RotaProtegida';
+import Login from './pages/Login/Login';
+import PainelAtendente from './pages/PainelAtendente/PainelAtendente';
+import Conversa from './pages/Conversa/Conversa';
+import PainelAdmin from './pages/PainelAdmin/PainelAdmin';
 
-function App(){ 
-  // 1. Memória para guardar a lista de atendimentos que vai vir do mock (começa vazia [])
-  const [atendimentos, setAtendimentos] = useState([]);
+/**
+ * Protótipo navegável — LocalFlow AI (MVP).
+ * 4 telas: Login, Painel do Atendente, Conversa individual, Painel do
+ * Administrador. Rotas protegidas por autenticação simulada (mock).
+ */
 
-  // 2. Memória para saber se está carregando ou não (começa como true)
-  const [carregando, setCarregando] = useState(true);
-
-  useEffect(() => { 
-    async function carregar() { 
-      const dados = await atendimentoService.buscarAtendimentos();
-      setAtendimentos(dados);
-      setCarregando(false); 
-    }
-
-    carregar(); 
-      
-  }, []);
-  
-  return ( 
-    <div style={{ padding: '20px', fontFamily: 'sans-serif', backgroundColor: '#121214', minHeight: '100vh', color: '#fff' }}> 
-      <h1>LocalFlow AI - Caixa de Entrada</h1>
-
-      {/* Se 'carregando' for true, mostra a mensagem de espera */}
-      {carregando ? (
-        <p>⏳ Carregando atendimentos do servidor...</p>
-      ) : (
-        /* Se 'carregando' for false, desenha a lista com nosso novo componente! */
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '600px' }}>
-          {atendimentos.map((atendimento) => (
-            <CardAtendimento key={atendimento.id} atendimento={atendimento} />
-          ))}
-        </div>
-      )}
-    </div>
-  )
+/** Raiz: redireciona conforme a sessão. */
+function Inicio() {
+  const { usuario, carregando } = useAuth();
+  if (carregando) return <div style={{ padding: 40, color: 'var(--text-secondary)' }}>Carregando…</div>;
+  if (!usuario) return <Navigate to="/login" replace />;
+  return <Navigate to={usuario.perfil === 'admin' ? '/admin' : '/painel'} replace />;
 }
 
+export default function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Inicio />} />
+          <Route path="/login" element={<Login />} />
 
-export default App;
+          {/* Painel do Atendente + Conversa individual */}
+          <Route
+            path="/painel"
+            element={
+              <RotaProtegida perfil="atendente">
+                <PainelAtendente />
+              </RotaProtegida>
+            }
+          />
+          <Route
+            path="/painel/conversa/:id"
+            element={
+              <RotaProtegida perfil="atendente">
+                <Conversa />
+              </RotaProtegida>
+            }
+          />
+
+          {/* Painel do Administrador */}
+          <Route
+            path="/admin"
+            element={
+              <RotaProtegida perfil="admin">
+                <PainelAdmin />
+              </RotaProtegida>
+            }
+          />
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}

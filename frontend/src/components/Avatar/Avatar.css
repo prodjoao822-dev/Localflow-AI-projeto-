@@ -1,0 +1,12 @@
+.lf-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e6e3dc, #d6d2c8);
+  color: #6f6a5e;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  user-select: none;
+}

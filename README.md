@@ -35,9 +35,37 @@ Em desenvolvimento ativo. A arquitetura e as regras de negócio estão documenta
 - [Arquitetura](docs/arquitetura.md)
 - [Roadmap](docs/roadmap-desenvolvimento.md)
 
-## Demo
+## Como rodar localmente
 
-Frontend em deploy contínuo na Vercel: [localflow-ai-projeto.vercel.app](https://localflow-ai-projeto.vercel.app/)
+### Pré-requisitos
+
+- Node.js 18+
+- PostgreSQL
+- Redis
+
+### Passo a passo
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/prodjoao822-dev/Localflow-AI-projeto-.git
+cd Localflow-AI-projeto-
+
+# 2. Configure as variáveis de ambiente
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+# Edite os arquivos .env com suas credenciais.
+
+# 3. Instale as dependências e rode o backend
+cd backend
+npm install
+npx prisma migrate dev
+npm run dev
+
+# 4. Em outro terminal, rode o frontend
+cd ../frontend
+npm install
+npm run dev
+```
 
 ---
 

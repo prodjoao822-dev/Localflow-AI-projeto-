@@ -4,13 +4,12 @@ import { useAuth } from './context/useAuth';
 import RotaProtegida from './components/RotaProtegida/RotaProtegida';
 import Login from './pages/Login/Login';
 import PainelAtendente from './pages/PainelAtendente/PainelAtendente';
-import Conversa from './pages/Conversa/Conversa';
 import PainelAdmin from './pages/PainelAdmin/PainelAdmin';
 
 /**
  * Protótipo navegável — LocalFlow AI (MVP).
- * 4 telas: Login, Painel do Atendente, Conversa individual, Painel do
- * Administrador. Rotas protegidas por autenticação simulada (mock).
+ * 3 telas: Login, Atendimento (fila + conversa unificadas em 3 colunas) e
+ * Painel do Administrador. Rotas protegidas por autenticação simulada (mock).
  */
 
 /** Raiz: redireciona conforme a sessão. */
@@ -29,20 +28,12 @@ export default function App() {
           <Route path="/" element={<Inicio />} />
           <Route path="/login" element={<Login />} />
 
-          {/* Painel do Atendente + Conversa individual */}
+          {/* Tela de Atendimento unificada (fila + thread + contexto em 3 colunas) */}
           <Route
             path="/painel"
             element={
               <RotaProtegida perfil="atendente">
                 <PainelAtendente />
-              </RotaProtegida>
-            }
-          />
-          <Route
-            path="/painel/conversa/:id"
-            element={
-              <RotaProtegida perfil="atendente">
-                <Conversa />
               </RotaProtegida>
             }
           />

@@ -1,6 +1,74 @@
 /* ============================================================
    Painel do Atendente — fila de conversas (RF05/RF06)
+   Estrutura unificada: fila | thread | contexto (3 colunas)
    ============================================================ */
+
+/* ----- Layout de 3 colunas persistentes ----- */
+
+.atendimento {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.fila {
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.thread-coluna {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.thread-vazia {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--text-tertiary);
+  font-size: 14px;
+}
+
+/* Ajustes da fila para caber como coluna lateral */
+.fila .painel-topo {
+  padding: 20px 20px 0;
+}
+
+.fila .painel-titulo {
+  font-size: 19px;
+}
+
+.fila .painel-subtitulo {
+  font-size: 12.5px;
+}
+
+.fila .painel-controles {
+  padding: 14px 20px 0;
+}
+
+.fila .painel-filtros {
+  padding: 12px 20px 0;
+}
+
+.fila .painel-corpo {
+  padding: 10px 12px 20px;
+}
+
+.fila .painel-rodape-data {
+  padding: 0 20px 16px;
+}
 
 .painel-topo {
   display: flex;
@@ -109,7 +177,56 @@
   gap: 10px;
   border-radius: var(--radius-md);
   border: 1px solid transparent;
+  border-left: 3px solid transparent;
   transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Indicador de prioridade: borda esquerda colorida no item (RF06) */
+.painel-item.prio-alta {
+  border-left-color: var(--danger);
+}
+
+.painel-item.prio-media {
+  border-left-color: var(--warning);
+}
+
+.painel-item.prio-baixa {
+  border-left-color: var(--border-strong);
+}
+
+.painel-item.selecionada {
+  background: var(--bg-active);
+  border-color: var(--border-strong);
+}
+
+.painel-item-link {
+  cursor: pointer;
+  text-align: left;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+}
+
+/* Ponto colorido ao lado do nome do cliente */
+.prio-ponto {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.prio-ponto.prio-alta {
+  background: var(--danger);
+}
+
+.prio-ponto.prio-media {
+  background: var(--warning);
+}
+
+.prio-ponto.prio-baixa {
+  background: var(--border-strong);
 }
 
 .painel-item:hover {
@@ -205,7 +322,37 @@
    Responsivo — RNF02
    ============================================================ */
 
+@media (max-width: 1100px) {
+  /* Thread e contexto passam a empilhar; a fila continua visível */
+  .conversa-corpo {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .conversa-lateral {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+}
+
 @media (max-width: 720px) {
+  .atendimento {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .fila {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    overflow: visible;
+  }
+
+  .thread-coluna {
+    overflow: visible;
+  }
+
   .painel-topo,
   .painel-controles,
   .painel-filtros,

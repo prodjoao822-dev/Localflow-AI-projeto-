@@ -5,7 +5,8 @@
 .conversa {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -16,10 +17,6 @@
 }
 
 .conversa-nao-encontrada {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
   color: var(--text-secondary);
 }
 
@@ -32,23 +29,6 @@
   padding: 12px 20px;
   border-bottom: 1px solid var(--border);
   background: var(--bg);
-}
-
-.conversa-voltar {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.conversa-voltar:hover {
-  background: var(--bg-hover);
-  color: var(--text);
 }
 
 .conversa-cliente {
@@ -239,7 +219,7 @@
 /* ----- Lateral ----- */
 
 .conversa-lateral {
-  width: 320px;
+  width: 280px;
   flex-shrink: 0;
   border-left: 1px solid var(--border);
   overflow-y: auto;
@@ -439,7 +419,7 @@
 
   .conversa {
     height: auto;
-    min-height: 100vh;
+    min-height: 100%;
     overflow: visible;
   }
 

@@ -26,6 +26,12 @@ function badgeDoCard(conversa) {
  * Recebe o item no formato "resumo de lista" do contrato (GET /conversas).
  * A borda esquerda e a bolinha têm a cor da prioridade da IA.
  *
+ * [ASSUMIDO] O PNG mostra a tag "✦ IA" nos cards da fila. O resumo de
+ * lista do contrato não tem nenhum campo que diga se a IA atuou na
+ * conversa (isso só existe em `interacoesIA`, que vem no detalhe). Por
+ * isso a tag não aparece aqui — ela aparece nas bolhas da thread, onde
+ * o dado existe de verdade.
+ *
  * @param {{ conversa: object, selecionada: boolean, onSelecionar: (id) => void }} props
  */
 export default function CardConversa({ conversa, selecionada, onSelecionar }) {

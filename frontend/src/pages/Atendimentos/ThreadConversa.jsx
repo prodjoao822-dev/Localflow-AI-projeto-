@@ -15,6 +15,11 @@ function motivoBloqueio(conversa) {
 /**
  * Coluna 2 — cabeçalho do cliente, histórico (RF17) e campo de resposta.
  * Assumir conversa (RF08) aparece enquanto ninguém é responsável.
+ *
+ * [ASSUMIDO] Uma vez assumida, qualquer atendente pode responder — não só
+ * o responsável. RN05 não restringe isso (só a finalização como "perdida"
+ * é restrita ao responsável). Sem essa regra documentada, mantive o
+ * comportamento mais permissivo (cobertura de ausências).
  */
 export default function ThreadConversa({
   conversa,

@@ -14,6 +14,12 @@ import {
  * Coluna 3 — contexto da conversa aberta:
  * cliente, canal, classificação da IA (RF06), registro da IA (RF07/RN02)
  * e atualização de estado (RF18/RN08).
+ *
+ * [ASSUMIDO] O PNG mostra um card violeta "Resumo da IA" com um texto
+ * corrido. O contrato/schema não tem nenhum campo de resumo consolidado —
+ * só a lista de InteracaoIA. Por isso o card ficou "Registro da IA": a
+ * lista real das interações, sem inventar um campo de resumo que não
+ * existe no backend planejado.
  */
 export default function PainelContexto({ conversa, usuario, ocupado, onAtualizarStatus }) {
   // Finalizar exige escolher o resultado: guardamos que o usuário escolheu

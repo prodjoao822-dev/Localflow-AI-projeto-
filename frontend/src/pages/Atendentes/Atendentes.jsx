@@ -12,9 +12,12 @@ import './Atendentes.css';
 /**
  * Tela Gestão de Atendentes (RF02) — Configurações > Atendentes. Só Admin.
  * - Adicionar: dados + senha inicial; nasce com primeiro acesso pendente (RN05).
- * - Editar: dados cadastrais.
+ * - Editar: dados cadastrais, incluindo e-mail (que também é o login —
+ *   [PENDENTE] os requisitos não dizem se isso deveria ser permitido).
  * - "Remover" do RF02 = Desativar (único verbo do contrato:
  *   POST /atendentes/:id/desativar). O histórico de conversas é preservado.
+ *   [PENDENTE] o que fazer com conversas em que o desativado é responsável
+ *   — hoje elas continuam apontando para ele, sem voltar à fila geral.
  */
 export default function Atendentes() {
   const [atendentes, setAtendentes] = useState([]);

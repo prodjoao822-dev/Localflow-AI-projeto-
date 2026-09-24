@@ -1,149 +1,144 @@
 /**
  * SERVIÇO DE CONVERSAS / INBOX (Communication Layer)
  *
- * Espelha o módulo "Inbox / Atendimento" do backend. Hoje opera sobre uma
- * cópia em memória dos mocks (com delay simulado); quando a API real
- * existir, troca-se apenas o corpo destas funções por `fetch()`.
+ * Cada função espelha uma rota do contrato planejado
+ * (docs/planejamento-arquitetura.md, seção 5 — prefixo /api/v1) e devolve
+ * o mesmo formato de resposta ({ data, meta }). Hoje opera sobre uma
+ * cópia em memória dos mocks; quando a API existir, troca-se só o corpo
+ * destas funções por `fetch()`.
+ *
+ * As validações de regra de negócio aqui (ex.: só o responsável marca
+ * 'perdida') simulam o que o BACKEND fará — a regra não pode viver só na
+ * tela (docs/arquitetura.md, risco 3).
  */
 
-import { conversasMock, interacoesMock } from '../mocks/dadosMock';
+import { conversasMock } from '../mocks/dadosMock';
 
 const DELAY_SIMULADO_MS = 450;
 
-// Cópia profunda em memória: o protótipo pode mutar (assumir, enviar, mudar
-// estado) sem contaminar o arquivo de mocks.
-const estadoInicial = () =>
-  JSON.parse(JSON.stringify({ conversas: conversasMock, interacoes: interacoesMock }));
+const STATUS_VALIDOS = ['nova', 'em_atendimento', 'aguardando_cliente', 'finalizada'];
+const RESULTADOS_VALIDOS = ['resolvida', 'perdida'];
 
-let banco = estadoInicial();
+// Cópia profunda em memória: o protótipo pode mutar sem alterar o arquivo de mocks.
+const banco = structuredClone(conversasMock);
 
 function simularDelay() {
   return new Promise((resolve) => setTimeout(resolve, DELAY_SIMULADO_MS));
 }
 
-/** Traduz uma interação para a "linha do tempo" visível ao atendente. */
-function montarTimelineInteracoes(conversa) {
-  const interacoes = banco.interacoes[conversa.id] || [];
-  return interacoes.map((inter) => ({
-    id: inter.id,
-    dataHora: inter.dataHora,
-    tipo: inter.tipo,
-    detalhes: inter.detalhes,
-  }));
+function encontrar(id) {
+  const conversa = banco.find((c) => c.id === id);
+  if (!conversa) throw new Error('Conversa não encontrada.');
+  return conversa;
+}
+
+/** Formato "resumo de lista" do contrato (GET /conversas). */
+function paraResumo(conversa) {
+  const ultima = conversa.mensagens[conversa.mensagens.length - 1];
+  return {
+    id: conversa.id,
+    cliente: { ...conversa.cliente },
+    status: conversa.status,
+    // [ASSUMIDO] resultadoFinal não está no exemplo de lista do contrato,
+    // mas é campo da Conversa e a fila precisa dele para "Finalizados".
+    resultadoFinal: conversa.resultadoFinal,
+    intencao: conversa.intencao,
+    prioridade: conversa.prioridade,
+    atendenteResponsavel: conversa.atendenteResponsavel && { ...conversa.atendenteResponsavel },
+    needsAction: conversa.needsAction,
+    ultimaMensagem: ultima ? { texto: ultima.texto, at: ultima.createdAt } : null,
+  };
+}
+
+/** Formato de detalhe (GET /conversas/:id). */
+function paraDetalhe(conversa) {
+  return structuredClone(conversa);
 }
 
 export const conversaService = {
   /**
-   * Lista as conversas da fila (RF05) com a classificação da IA (RF06).
-   * @returns {Promise<Array>} conversas (sem histórico, para a fila)
+   * GET /conversas — fila (RF05) com classificação da IA (RF06).
+   * @returns {Promise<{ data: Array, meta: { page, limit, total } }>}
    */
-  async listarConversas() {
+  async listar() {
     await simularDelay();
-    return banco.conversas.map((conversa) => ({
-      id: conversa.id,
-      cliente: conversa.cliente,
-      status: conversa.status,
-      resultadoFinal: conversa.resultadoFinal ?? null,
-      intencao: conversa.intencao,
-      prioridade: conversa.prioridade,
-      atendenteId: conversa.atendenteId,
-      ultimaMensagem: conversa.ultimaMensagem,
-      ultimaAtualizacao: conversa.ultimaAtualizacao,
-      naoLidas: conversa.naoLidas,
-    }));
+    const data = banco.map(paraResumo);
+    return { data, meta: { page: 1, limit: data.length, total: data.length } };
   },
 
   /**
-   * Busca uma conversa com histórico de mensagens (RF17) e interações da IA
-   * registradas (RF07/RN02).
-   * @param {string} id
-   * @returns {Promise<{ conversa, mensagens, interacoes } | null>}
+   * GET /conversas/:id — histórico (RF17) + interações da IA (RF07/RN02).
+   * @returns {Promise<{ data: object }>}
    */
-  async buscarConversaPorId(id) {
+  async buscarPorId(id) {
     await simularDelay();
-    const conversa = banco.conversas.find((c) => c.id === id);
-    if (!conversa) return null;
-    return {
-      conversa: { ...conversa, mensagens: undefined },
-      mensagens: conversa.mensagens,
-      interacoes: montarTimelineInteracoes(conversa),
-    };
+    return { data: paraDetalhe(encontrar(id)) };
   },
 
   /**
-   * Atendente assume a conversa (RF08).
-   * @param {string} conversaId
-   * @param {string} atendenteId
+   * POST /conversas/:id/assumir — Atendente assume a conversa (RF08).
+   * @param {{ id: string, nome: string }} usuario usuário autenticado
    */
-  async assumirConversa(conversaId, atendenteId) {
+  async assumir(id, usuario) {
     await simularDelay();
-    const conversa = banco.conversas.find((c) => c.id === conversaId);
-    if (!conversa) throw new Error('Conversa não encontrada.');
-    conversa.atendenteId = atendenteId;
-    if (conversa.status === 'nova') conversa.status = 'em_atendimento';
-    return { ...conversa, mensagens: undefined };
-  },
-
-  /**
-   * Envia uma mensagem como atendente (RF17) e devolve o estado atualizado.
-   * @param {string} conversaId
-   * @param {string} atendenteId
-   * @param {string} texto
-   */
-  async enviarMensagem(conversaId, atendenteId, texto) {
-    await simularDelay();
-    const conversa = banco.conversas.find((c) => c.id === conversaId);
-    if (!conversa) throw new Error('Conversa não encontrada.');
-
-    const novaMensagem = {
-      id: `msg-${Date.now()}`,
-      remetente: 'atendente',
-      texto,
-      dataHora: new Date().toISOString(),
-      autorId: atendenteId,
-      autorNome: null,
-    };
-    conversa.mensagens.push(novaMensagem);
-    conversa.ultimaMensagem = texto;
-    conversa.ultimaAtualizacao = novaMensagem.dataHora;
-    conversa.naoLidas = 0;
-
-    return {
-      conversa: { ...conversa, mensagens: undefined },
-      mensagens: conversa.mensagens,
-      interacoes: montarTimelineInteracoes(conversa),
-    };
-  },
-
-  /**
-   * Atualiza o estado da oportunidade (RF18 / RN08).
-   * Contrato oficial: 4 estados ('nova', 'em_atendimento', 'aguardando_cliente',
-   * 'finalizada'). 'resolvida'/'perdida' não são estados — são resultados de
-   * finalização e chegam como `resultadoFinal` quando o estado é 'finalizada'.
-   * Uma conversa finalizada NÃO reabre automaticamente (decisão confirmada);
-   * reabrir é ação manual explícita do atendente (fora deste serviço por ora).
-   *
-   * @param {string} conversaId
-   * @param {'nova'|'em_atendimento'|'aguardando_cliente'|'finalizada'} status
-   * @param {'resolvida'|'perdida'|null} [resultadoFinal] obrigatório se status = 'finalizada'
-   */
-  async atualizarStatus(conversaId, status, resultadoFinal = null) {
-    await simularDelay();
-    const conversa = banco.conversas.find((c) => c.id === conversaId);
-    if (!conversa) throw new Error('Conversa não encontrada.');
-
-    const STATUS_VALIDOS = ['nova', 'em_atendimento', 'aguardando_cliente', 'finalizada'];
-    if (!STATUS_VALIDOS.includes(status)) {
-      // Rejeita estados fora do contrato RN08 (ex.: alguém passando 'resolvida').
-      throw new Error(`Estado inválido: ${status}. Use o contrato RN08 (4 estados).`);
+    const conversa = encontrar(id);
+    if (conversa.atendenteResponsavel) {
+      throw new Error('Esta conversa já tem um responsável.');
     }
-    if (status === 'finalizada' && !['resolvida', 'perdida'].includes(resultadoFinal)) {
-      throw new Error('Finalizar exige resultadoFinal: "resolvida" ou "perdida".');
+    conversa.atendenteResponsavel = { id: usuario.id, nome: usuario.nome };
+    if (conversa.status === 'nova') conversa.status = 'em_atendimento';
+    return { data: paraDetalhe(conversa) };
+  },
+
+  /**
+   * PATCH /conversas/:id/status — estado da oportunidade (RF18 / RN08).
+   * - Só os 4 estados oficiais; 'finalizada' exige resultadoFinal.
+   * - Só o atendente RESPONSÁVEL pode finalizar como 'perdida' (decisão confirmada).
+   * - Conversa finalizada não reabre sozinha; reabrir = esta mesma ação, manual.
+   */
+  async atualizarStatus(id, { status, resultadoFinal = null }, usuario) {
+    await simularDelay();
+    const conversa = encontrar(id);
+
+    if (!STATUS_VALIDOS.includes(status)) {
+      throw new Error(`Estado inválido: ${status}.`);
+    }
+    if (status === 'finalizada' && !RESULTADOS_VALIDOS.includes(resultadoFinal)) {
+      throw new Error('Finalizar exige o resultado: resolvida ou perdida.');
+    }
+    if (resultadoFinal === 'perdida' && conversa.atendenteResponsavel?.id !== usuario.id) {
+      throw new Error('Só o atendente responsável pode marcar a conversa como perdida.');
     }
 
     conversa.status = status;
-    // Ao sair de 'finalizada' (reabertura manual), o resultado antigo é limpo.
     conversa.resultadoFinal = status === 'finalizada' ? resultadoFinal : null;
-    return { ...conversa, mensagens: undefined };
+    if (status === 'finalizada') conversa.needsAction = false;
+    return { data: paraDetalhe(conversa) };
+  },
+
+  /**
+   * POST /conversas/:id/mensagens — Atendente responde (RF17).
+   * O envio real ao WhatsApp é do Provider Gateway (fora de escopo agora):
+   * a mensagem nasce com statusEnvio 'pendente' e o mock a marca 'enviada'.
+   */
+  async enviarMensagem(id, texto, usuario) {
+    await simularDelay();
+    const conversa = encontrar(id);
+    if (!conversa.atendenteResponsavel) {
+      throw new Error('Assuma a conversa antes de responder.');
+    }
+
+    const mensagem = {
+      id: `msg-${Date.now()}`,
+      origem: 'atendente',
+      autor: { id: usuario.id, nome: usuario.nome },
+      texto,
+      statusEnvio: 'enviada',
+      createdAt: new Date().toISOString(),
+    };
+    conversa.mensagens.push(mensagem);
+    // [ASSUMIDO] responder ao cliente conta como "ação humana tomada".
+    conversa.needsAction = false;
+    return { data: paraDetalhe(conversa) };
   },
 };

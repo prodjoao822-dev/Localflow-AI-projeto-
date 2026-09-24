@@ -9,7 +9,7 @@ export default function RotaProtegida({ perfil, children }) {
   const { usuario, carregando } = useAuth();
 
   if (carregando) {
-    return <div style={{ padding: 40, color: 'var(--text-secondary)' }}>Carregando…</div>;
+    return <div style={{ padding: 40, color: 'var(--text-muted)' }}>Carregando…</div>;
   }
 
   if (!usuario) {
@@ -17,8 +17,8 @@ export default function RotaProtegida({ perfil, children }) {
   }
 
   if (perfil && usuario.perfil !== perfil) {
-    // Perfil correto para cada painel: admin -> /admin, atendente -> /painel
-    return <Navigate to={usuario.perfil === 'admin' ? '/admin' : '/painel'} replace />;
+    // Perfil sem acesso a esta tela: volta para a tela comum a todos.
+    return <Navigate to="/atendimentos" replace />;
   }
 
   return children;

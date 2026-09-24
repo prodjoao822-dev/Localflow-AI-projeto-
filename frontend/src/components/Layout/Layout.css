@@ -1,11 +1,11 @@
 .layout {
   display: flex;
-  min-height: 100vh;
-  background: var(--bg);
+  height: 100vh;
+  background: var(--bg-app);
 }
 
 /* ============================================================
-   Sidebar
+   Menu lateral
    ============================================================ */
 
 .sidebar {
@@ -13,135 +13,83 @@
   flex-direction: column;
   width: var(--sidebar-w);
   flex-shrink: 0;
-  background: var(--bg-subtle);
-  border-right: 1px solid var(--border);
+  background: var(--bg-sidebar);
+  padding: var(--space-6) var(--space-3) var(--space-4);
 }
 
-.sidebar-top {
-  padding: 18px 16px 10px;
-}
-
-.sidebar-empresa {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.sidebar-empresa-marca {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-sm);
-  background: var(--text);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  flex-shrink: 0;
-}
-
-.sidebar-empresa-texto {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.sidebar-empresa-texto strong {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.sidebar-empresa-texto span {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.sidebar-marca {
+  padding: 0 var(--space-3) var(--space-8);
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 8px 10px;
+  gap: var(--space-1);
   flex: 1;
 }
 
 .sidebar-nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 14px;
-  color: var(--text-secondary);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  gap: var(--space-3);
+  height: var(--control-h);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-body-lg);
+  font-weight: var(--fw-medium);
+  color: var(--text-nav);
+  transition: background-color var(--transition), color var(--transition);
 }
 
 .sidebar-nav-item:hover {
-  background: var(--bg-hover);
-  color: var(--text);
+  background: var(--surface-hover);
+  color: var(--text-label);
 }
 
 .sidebar-nav-item.ativo {
-  background: var(--bg-active);
-  color: var(--text);
-  font-weight: 500;
-}
-
-.sidebar-bottom {
-  padding: 10px;
-  border-top: 1px solid var(--border);
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-weight: var(--fw-semibold);
 }
 
 .sidebar-usuario {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px;
-  border-radius: var(--radius-sm);
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-2) 0;
+  border-top: 1px solid var(--divider);
 }
 
 .sidebar-usuario-texto {
   display: flex;
   flex-direction: column;
-  min-width: 0;
   flex: 1;
+  min-width: 0;
 }
 
 .sidebar-usuario-texto strong {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text-strong);
 }
 
 .sidebar-usuario-texto span {
-  font-size: 12px;
-  color: var(--text-tertiary);
+  font-size: var(--fs-caption);
+  color: var(--text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.sidebar-logout {
+.sidebar-sair {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: var(--radius-sm);
-  color: var(--text-tertiary);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--text-faint);
 }
 
-.sidebar-logout:hover {
-  background: var(--bg-hover);
+.sidebar-sair:hover {
+  background: var(--surface-hover);
   color: var(--text);
 }
 
@@ -152,41 +100,67 @@
 .conteudo {
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
+  overflow: auto;
 }
 
 /* ============================================================
-   Responsivo — RNF02
+   Telas estreitas: menu vira barra superior
+   [PENDENTE de validação visual — sem PNG mobile]
    ============================================================ */
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .layout {
     flex-direction: column;
   }
 
   .sidebar {
     width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
   }
 
-  .sidebar-top {
-    padding: 12px 14px 6px;
+  .sidebar-marca {
+    padding: 0;
+  }
+
+  .sidebar-marca .lf-logo-nome {
+    display: none;
   }
 
   .sidebar-nav {
     flex-direction: row;
-    padding: 6px 10px;
-    overflow-x: auto;
   }
 
   .sidebar-nav-item {
-    white-space: nowrap;
+    height: 38px;
+    font-size: var(--fs-body);
   }
 
-  .sidebar-bottom {
-    display: none; /* usuário fica acessível pela ação de logout no topo, se necessário */
+  .sidebar-usuario {
+    border-top: none;
+    padding: 0;
+  }
+
+  .sidebar-usuario .lf-avatar,
+  .sidebar-usuario-texto {
+    display: none;
+  }
+}
+
+/* Celular: menu só com ícones (o nome continua no title e para leitor de tela) */
+@media (max-width: 600px) {
+  .sidebar-nav {
+    flex: 1;
+  }
+
+  .sidebar-nav-rotulo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 }

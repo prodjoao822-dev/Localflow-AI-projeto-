@@ -33,6 +33,29 @@ export function formatarDataHora(isoString) {
 }
 
 /**
+ * Horário para listas: hora se for hoje (09:12), senão dia/mês (29/05).
+ */
+export function formatarHoraOuData(isoString) {
+  if (!isoString) return '';
+  const data = new Date(isoString);
+  const hoje = new Date();
+  if (data.toDateString() === hoje.toDateString()) return formatarHora(isoString);
+  return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+}
+
+/**
+ * Momento de uma mensagem/evento: hora se for hoje (08:55), senão
+ * dia/mês + hora (04/09 08:31) — no histórico a hora sempre importa.
+ */
+export function formatarMomento(isoString) {
+  if (!isoString) return '';
+  const data = new Date(isoString);
+  if (data.toDateString() === new Date().toDateString()) return formatarHora(isoString);
+  const dia = data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+  return `${dia} ${formatarHora(isoString)}`;
+}
+
+/**
  * Formata uma string ISO para um rótulo relativo curto (ex.: "agora",
  * "5 min", "2 h", "3 dias").
  */
@@ -51,20 +74,25 @@ export function formatarTempoRelativo(isoString) {
 }
 
 /**
- * Rótulo e tom visual do estado da oportunidade (RF18 / RN08).
+ * Rótulo e tom visual do estado da conversa (RF18 / RN08).
  * Contrato oficial: 4 estados. `resolvida`/`perdida` NÃO são estados —
- * são resultados de finalização (ver rotuloResultadoFinal).
+ * são resultados de finalização (ver RESULTADO_FINAL).
+ * Tons: 'neutral' | 'info' | 'warning' | 'danger' | 'success' | 'ia'
+ * (mapeados para os tokens semânticos em Badge.css).
  */
-export const OPORTUNIDADE = {
-  nova: { label: 'Nova', tone: 'accent' },
-  em_atendimento: { label: 'Em atendimento', tone: 'neutral' },
+export const STATUS_CONVERSA = {
+  nova: { label: 'Nova', tone: 'neutral' },
+  em_atendimento: { label: 'Em atendimento', tone: 'info' },
   aguardando_cliente: { label: 'Aguardando cliente', tone: 'warning' },
   finalizada: { label: 'Finalizada', tone: 'neutral' },
 };
 
-export function rotuloOportunidade(status) {
-  return OPORTUNIDADE[status] || { label: status, tone: 'neutral' };
+export function rotuloStatus(status) {
+  return STATUS_CONVERSA[status] || { label: status, tone: 'neutral' };
 }
+
+/** needsAction é flag, não estado — mas tem rótulo visual próprio. */
+export const PRECISA_DE_ACAO = { label: 'Precisa de ação', tone: 'danger' };
 
 /** Rótulo e tom do resultado de finalização (RN08): 'resolvida' | 'perdida'. */
 export const RESULTADO_FINAL = {
@@ -76,28 +104,33 @@ export function rotuloResultadoFinal(resultado) {
   return RESULTADO_FINAL[resultado] || { label: resultado, tone: 'neutral' };
 }
 
-/** Rótulo e tom da classificação de intenção da IA (RF06). */
+/** Rótulo da classificação de intenção da IA (RF06). */
 export const INTENCAO = {
-  venda_rapida: { label: 'Venda rápida', tone: 'accent' },
-  venda_sob_medida: { label: 'Venda sob medida', tone: 'accent' },
-  duvida: { label: 'Dúvida', tone: 'neutral' },
-  faq: { label: 'FAQ', tone: 'neutral' },
-  reclamacao: { label: 'Reclamação', tone: 'danger' },
+  venda_rapida: 'Venda rápida',
+  venda_sob_medida: 'Venda sob medida',
+  duvida: 'Dúvida',
+  faq: 'FAQ',
+  reclamacao: 'Reclamação',
 };
 
 export function rotuloIntencao(intencao) {
-  return INTENCAO[intencao] || { label: intencao, tone: 'neutral' };
+  return INTENCAO[intencao] || 'Não classificada';
 }
 
-/** Rótulo e tom da prioridade (RF06). */
+/**
+ * Rótulo da prioridade (RF06). O valor técnico é sempre alta|media|baixa
+ * (contrato/schema). O texto exibido fica SÓ aqui: se o produto decidir
+ * usar "Quente/Morna/Fria" como label visual, troca-se apenas `label`.
+ * A cor vem do token --prioridade-{valor}.
+ */
 export const PRIORIDADE = {
-  alta: { label: 'Prioridade alta', tone: 'danger' },
-  media: { label: 'Prioridade média', tone: 'warning' },
-  baixa: { label: 'Prioridade baixa', tone: 'neutral' },
+  alta: { label: 'Alta', ordem: 0 },
+  media: { label: 'Média', ordem: 1 },
+  baixa: { label: 'Baixa', ordem: 2 },
 };
 
 export function rotuloPrioridade(prioridade) {
-  return PRIORIDADE[prioridade] || { label: prioridade, tone: 'neutral' };
+  return PRIORIDADE[prioridade]?.label || 'Sem prioridade';
 }
 
 /** Rótulo do tipo de interação da IA (RF07/RN02). */

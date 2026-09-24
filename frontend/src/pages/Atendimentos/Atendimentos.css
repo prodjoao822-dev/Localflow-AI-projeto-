@@ -1,0 +1,420 @@
+/* ============================================================
+   Tela de Atendimentos — cabeçalho, contadores e 3 colunas
+   ============================================================ */
+
+.atendimentos {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.atendimentos-contadores {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  padding: 0 var(--space-10) var(--space-5);
+}
+
+.atendimentos-colunas {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: var(--col-fila-w) minmax(0, 1fr) var(--col-contexto-w);
+  border-top: 1px solid var(--divider);
+}
+
+.atendimentos-abas {
+  display: none;
+}
+
+/* ---------- Coluna genérica ---------- */
+
+.coluna {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.coluna-vazia {
+  padding: var(--space-6);
+  font-size: var(--fs-body);
+  color: var(--text-faint);
+}
+
+.coluna-vazia-centro {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+/* ============================================================
+   Coluna 1 — Fila
+   ============================================================ */
+
+.coluna-fila {
+  padding: var(--space-5) var(--space-4);
+  border-right: 1px solid var(--divider);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.fila-grupo-titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text-secondary);
+}
+
+.fila-grupo-contagem {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--surface-raised);
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+}
+
+.fila-lista {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ============================================================
+   Coluna 2 — Thread
+   ============================================================ */
+
+.coluna-thread {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.thread-topo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--divider);
+}
+
+.thread-cliente {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.thread-cliente strong {
+  font-size: var(--fs-body-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--text-strong);
+}
+
+.thread-cliente span {
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+}
+
+.thread-topo-acao {
+  margin-left: auto;
+}
+
+.thread-responsavel {
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+}
+
+.thread-responsavel strong {
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+}
+
+.thread-erro {
+  margin: var(--space-3) var(--space-6) 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--danger-soft);
+  color: var(--danger-fg);
+  font-size: var(--fs-body);
+}
+
+.thread-mensagens {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+}
+
+.thread-compositor {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--divider);
+}
+
+.thread-compositor .input {
+  background: var(--surface-raised);
+}
+
+.thread-enviar {
+  width: var(--control-h);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   Coluna 3 — Contexto
+   ============================================================ */
+
+.coluna-contexto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  border-left: 1px solid var(--divider);
+}
+
+.contexto-secao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.contexto-grade {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.contexto-grade > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.contexto-rotulo {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+}
+
+.contexto-nome {
+  font-size: var(--fs-body-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--text-strong);
+}
+
+.contexto-linha,
+.contexto-canal {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+}
+
+.contexto-canal {
+  font-weight: var(--fw-semibold);
+  color: var(--text-strong);
+}
+
+.contexto-canal svg {
+  color: var(--brand);
+}
+
+.contexto-valor {
+  color: var(--text);
+  font-weight: var(--fw-medium);
+}
+
+/* Registro da IA (card violeta) */
+.contexto-ia {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--ia-panel);
+  border: 1px solid var(--ia-border);
+  border-radius: var(--radius-lg);
+}
+
+.contexto-ia-titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--ia-fg);
+}
+
+.contexto-ia-lista {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.contexto-ia-lista li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contexto-ia-tipo {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  color: var(--ia-fg);
+}
+
+.contexto-ia-tipo time {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-weight: var(--fw-regular);
+  color: var(--text-subtle);
+}
+
+.contexto-ia-lista p,
+.contexto-ia-vazio {
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.contexto-resultado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+}
+
+.contexto-finalizar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.contexto-finalizar-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.contexto-dica {
+  font-size: var(--fs-caption);
+  color: var(--text-faint);
+}
+
+/* ============================================================
+   Responsivo (RNF02) — [PENDENTE de validação visual: sem PNG]
+   ============================================================ */
+
+@media (max-width: 1280px) {
+  .atendimentos {
+    --col-fila-w: 280px;
+    --col-contexto-w: 280px;
+  }
+}
+
+/* Telas estreitas: uma coluna por vez, escolhida pelas abas */
+@media (max-width: 1100px) {
+  .atendimentos-contadores {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .atendimentos-contadores {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .atendimentos-abas {
+    display: flex;
+    gap: var(--space-1);
+    padding: 0 var(--space-4) var(--space-3);
+  }
+
+  .atendimentos-aba {
+    flex: 1;
+    height: 38px;
+    border-radius: var(--radius-md);
+    font-weight: var(--fw-semibold);
+    color: var(--text-muted);
+    background: var(--surface);
+  }
+
+  .atendimentos-aba.ativa {
+    background: var(--brand-soft);
+    color: var(--brand);
+  }
+
+  .atendimentos-aba:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* A página inteira rola; cada coluna cresce com o conteúdo */
+  .atendimentos {
+    height: auto;
+  }
+
+  .atendimentos-colunas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .atendimentos-colunas > .coluna {
+    overflow: visible;
+  }
+
+  .thread-mensagens {
+    min-height: 50vh;
+    max-height: 70vh;
+  }
+
+  .thread-compositor {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-app);
+  }
+
+  .atendimentos-colunas > .coluna {
+    display: none;
+    border: none;
+  }
+
+  .atendimentos-colunas[data-aba='fila'] > .coluna-fila,
+  .atendimentos-colunas[data-aba='conversa'] > .coluna-thread,
+  .atendimentos-colunas[data-aba='contexto'] > .coluna-contexto {
+    display: flex;
+  }
+}
+
+@media (max-width: 600px) {
+  .thread-topo {
+    flex-wrap: wrap;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .thread-mensagens,
+  .thread-compositor {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+}

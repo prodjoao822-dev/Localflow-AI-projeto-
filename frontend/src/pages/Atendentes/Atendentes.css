@@ -1,0 +1,131 @@
+.atendentes-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 1000px;
+  padding: var(--space-2) var(--space-10) var(--space-10);
+}
+
+.atendentes-aviso {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--success-soft);
+  color: var(--success-fg);
+  font-size: var(--fs-body);
+}
+
+.atendentes-vazio {
+  color: var(--text-faint);
+}
+
+/* ---------- Tabela (padrão da tela de Atendentes no PNG) ---------- */
+
+.tabela {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-lg);
+  /* Sem overflow: hidden — senão o menu "⋯" é cortado. Os cantos
+     arredondados ficam por conta das células das pontas. */
+}
+
+.tabela thead th:first-child { border-top-left-radius: var(--radius-lg); }
+.tabela thead th:last-child { border-top-right-radius: var(--radius-lg); }
+
+.tabela th {
+  height: 48px;
+  padding: 0 var(--space-5);
+  text-align: left;
+  background: var(--surface-table-head);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+}
+
+.tabela td {
+  height: 64px;
+  padding: 0 var(--space-5);
+  border-top: 1px solid var(--divider);
+  font-size: var(--fs-body-lg);
+}
+
+.tabela-nome {
+  font-weight: var(--fw-semibold);
+  color: var(--text-strong);
+}
+
+.tabela-email {
+  color: var(--text);
+}
+
+.tabela-email-mobile {
+  display: none;
+}
+
+.tabela tr.inativo .tabela-nome,
+.tabela tr.inativo .tabela-email {
+  color: var(--text-muted);
+}
+
+.tabela-status {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tabela-acoes {
+  width: 56px;
+  text-align: right;
+}
+
+/* ---------- Formulário ---------- */
+
+.form-opcional {
+  font-weight: var(--fw-regular);
+  color: var(--text-faint);
+}
+
+.form-ajuda {
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+}
+
+.form-pendencia {
+  align-self: flex-start;
+}
+
+/* ---------- Telas estreitas: e-mail vai para baixo do nome ---------- */
+
+@media (max-width: 1100px) {
+  .atendentes-corpo {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+}
+
+@media (max-width: 700px) {
+  .tabela thead th:nth-child(2),
+  .tabela td.tabela-email {
+    display: none;
+  }
+
+  .tabela td,
+  .tabela th {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .tabela-acoes {
+    width: 44px;
+    padding-left: 0 !important;
+  }
+
+  .tabela-email-mobile {
+    display: block;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-regular);
+    color: var(--text-muted);
+    overflow-wrap: anywhere;
+  }
+}

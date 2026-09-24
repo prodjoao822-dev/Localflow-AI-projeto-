@@ -1,0 +1,20 @@
+.lf-prioridade {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+}
+
+.lf-prioridade-ponto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--cor-prioridade);
+}
+
+.lf-prioridade-alta { --cor-prioridade: var(--prioridade-alta); }
+.lf-prioridade-media { --cor-prioridade: var(--prioridade-media); }
+.lf-prioridade-baixa,
+.lf-prioridade-nenhuma { --cor-prioridade: var(--prioridade-baixa); }

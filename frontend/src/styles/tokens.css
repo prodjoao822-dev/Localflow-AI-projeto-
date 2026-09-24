@@ -1,0 +1,175 @@
+/* ============================================================
+   LocalFlow AI — Design tokens
+   Extraídos das telas de referência (design/assets/Telas Localflow/)
+   e validados no Passo 1 do design system.
+
+   Duas camadas:
+   1. PRIMITIVOS — a paleta crua (hex). Nunca usados direto nos componentes.
+   2. SEMÂNTICOS — o SIGNIFICADO de cada cor/medida. Componentes só usam estes.
+
+   Por quê: se amanhã "prioridade alta" mudar de laranja para vermelho,
+   muda-se UMA linha na camada semântica, não dezenas de componentes.
+   ============================================================ */
+
+:root {
+  /* ---------- 1. Primitivos: paleta (base Tailwind, medida nos PNGs) ---------- */
+  --slate-950: #161b22;
+  --slate-900: #1f2933;
+  --slate-850: #242e38;
+  --slate-800: #26303b;
+  --slate-750: #2d3846;
+  --slate-700: #37424f;
+  --slate-650: #2e3844;
+  --slate-925: #1b242d;
+  --slate-910: #1d2530;
+
+  --gray-50: #f5f5f5;
+  --gray-100: #f0f2f5;
+  --gray-200: #e5e7eb;
+  --gray-300: #d4dae2;
+  --gray-400: #b7c0cc;
+  --gray-500: #8b96a5;
+  --gray-550: #7c8794;
+  --gray-600: #6b7684;
+  --gray-650: #5b6675;
+
+  --green-400: #4ade80;
+  --green-500: #22c55e;
+  --green-600: #16a34a;
+  --green-ink: #0f1712;
+  --rose-400: #fb7185;
+  --blue-400: #60a5fa;
+  --amber-400: #fbbf24;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --orange-500: #f97316;
+  --yellow-500: #eab308;
+  --violet-300: #c4b5fd;
+
+  /* ---------- 2. Semânticos: superfícies ---------- */
+  --bg-sidebar: var(--slate-950);
+  --bg-app: var(--slate-900);
+  --surface: var(--slate-850);
+  --surface-raised: var(--slate-800);
+  --surface-input: var(--slate-925);
+  --surface-table-head: var(--slate-910);
+  --surface-hover: rgba(255, 255, 255, 0.04);
+
+  --border: var(--slate-700);
+  --divider: var(--slate-650);
+
+  /* ---------- Texto ---------- */
+  --text-strong: var(--gray-50);
+  --text: var(--gray-200);
+  --text-secondary: var(--gray-300);
+  --text-label: var(--gray-400);
+  --text-muted: var(--gray-500);
+  --text-subtle: var(--gray-550);
+  --text-faint: var(--gray-600);
+  --text-nav: var(--gray-650);
+
+  /* ---------- Marca / ação primária ---------- */
+  --brand: var(--green-500);
+  --brand-hover: var(--green-600);
+  --brand-ink: var(--green-ink); /* texto sobre fundo verde */
+  --brand-soft: rgba(34, 197, 94, 0.12); /* menu ativo */
+  --brand-selected: rgba(34, 197, 94, 0.08); /* card selecionado */
+  --brand-border: rgba(34, 197, 94, 0.5);
+  --focus-ring: 0 0 0 2px rgba(34, 197, 94, 0.45);
+
+  /* ---------- Estados da conversa (RN08) + flag needsAction ----------
+     -fg = texto/ícone, -soft = fundo tint (~15% da cor), -border = contorno */
+  --status-acao-fg: var(--rose-400); /* needsAction = true */
+  --status-acao-soft: rgba(251, 113, 133, 0.15);
+  --status-acao-card: rgba(251, 113, 133, 0.08);
+  --status-acao-border: rgba(251, 113, 133, 0.3);
+
+  --status-nova-fg: var(--slate-400); /* [ASSUMIDO] sem referência no PNG */
+  --status-nova-soft: rgba(148, 163, 184, 0.15);
+
+  --status-atendimento-fg: var(--blue-400);
+  --status-atendimento-soft: rgba(96, 165, 250, 0.15);
+
+  --status-aguardando-fg: var(--amber-400);
+  --status-aguardando-soft: rgba(251, 191, 36, 0.15);
+
+  --status-finalizada-fg: var(--slate-400);
+  --status-finalizada-soft: rgba(148, 163, 184, 0.15);
+
+  /* Resultado de finalização */
+  --resultado-resolvida-fg: var(--green-400);
+  --resultado-resolvida-soft: rgba(74, 222, 128, 0.15);
+  --resultado-perdida-fg: var(--rose-400);
+  --resultado-perdida-soft: rgba(251, 113, 133, 0.15);
+
+  /* ---------- Prioridade (RF06): alta | media | baixa ---------- */
+  --prioridade-alta: var(--orange-500);
+  --prioridade-media: var(--yellow-500);
+  --prioridade-baixa: var(--slate-500);
+
+  /* ---------- IA (RF07 / RN02) ---------- */
+  --ia-fg: var(--violet-300);
+  --ia-soft: rgba(139, 92, 246, 0.2); /* tag "IA" e bolha da IA */
+  --ia-panel: rgba(139, 92, 246, 0.08); /* card "Registro da IA" */
+  --ia-border: rgba(139, 92, 246, 0.3);
+  --ia-border-strong: rgba(139, 92, 246, 0.55); /* borda tracejada da bolha */
+
+  /* ---------- Mensagens ---------- */
+  --bubble-cliente: var(--slate-750);
+  --bubble-atendente: rgba(96, 165, 250, 0.15); /* [ASSUMIDO] = tint "em atendimento" */
+  --bubble-atendente-border: rgba(96, 165, 250, 0.35);
+
+  /* ---------- Sucesso / inativo (pílulas de status de usuário) ---------- */
+  --success-fg: var(--green-400);
+  --success-soft: rgba(74, 222, 128, 0.15);
+  --danger-fg: var(--rose-400);
+  --danger-soft: rgba(251, 113, 133, 0.15);
+  --pendente-fg: var(--amber-400); /* placeholders [PENDENTE] visíveis */
+  --pendente-soft: rgba(251, 191, 36, 0.1);
+
+  /* ---------- Tipografia ---------- */
+  --font-display: 'Plus Jakarta Sans', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --fs-display: 30px; /* título da página */
+  --fs-stat: 28px; /* números dos contadores, marca */
+  --fs-body-lg: 16px; /* mensagens, nomes, inputs, subtítulo */
+  --fs-body: 14px; /* prévia, menu, rótulos, títulos de seção */
+  --fs-small: 13px; /* badges, cabeçalho de tabela */
+  --fs-caption: 12px; /* horário, breadcrumb, rodapés */
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  /* ---------- Espaçamento (grade de 4px) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* ---------- Tamanhos ---------- */
+  --control-h: 44px; /* botões, inputs, itens de menu */
+  --avatar-md: 40px;
+  --badge-h: 22px;
+  --sidebar-w: 240px;
+  --col-fila-w: 320px;
+  --col-contexto-w: 320px;
+
+  /* ---------- Raios ---------- */
+  --radius-sm: 6px; /* badges */
+  --radius-md: 8px; /* botões, inputs, menu */
+  --radius-lg: 12px; /* cards, bolhas */
+  --radius-xl: 16px; /* card de login */
+  --radius-full: 999px; /* pílulas, avatares */
+
+  /* ---------- Sombras: nenhuma (hierarquia por camadas + bordas) ---------- */
+
+  --transition: 0.15s ease;
+}

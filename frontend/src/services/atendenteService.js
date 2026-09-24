@@ -1,79 +1,93 @@
 /**
  * SERVIÇO DE ATENDENTES (Communication Layer)
  *
- * Espelha o módulo "Tenant" (cadastro de empresa e atendentes) do backend.
- * Implementa o CRUD básico de atendentes (RF02) sobre uma cópia em memória.
- * O fluxo completo de cadastro (permissões, aprovação) é [PENDENTE] nos
- * requisitos — ver placeholders nas telas.
+ * Cada função espelha uma rota do contrato planejado
+ * (docs/planejamento-arquitetura.md, seção 5 — "Atendentes") e devolve
+ * { data }. Somente o Admin gerencia atendentes; a senha nunca aparece na
+ * resposta. Hoje opera sobre a tabela em memória `bancoUsuarios`.
  */
 
-import { atendentesMock } from '../mocks/dadosMock';
+import { bancoUsuarios, semSenha } from '../mocks/bancoUsuarios';
 
 const DELAY_SIMULADO_MS = 450;
-
-let banco = atendentesMock.map((a) => ({ ...a }));
 
 function simularDelay() {
   return new Promise((resolve) => setTimeout(resolve, DELAY_SIMULADO_MS));
 }
 
+function encontrar(id) {
+  const atendente = bancoUsuarios.find((u) => u.id === id && u.perfil === 'atendente');
+  if (!atendente) throw new Error('Atendente não encontrado.');
+  return atendente;
+}
+
+/** E-mail é único POR EMPRESA (schema Prisma). No mock há uma empresa só. */
+function emailEmUso(email, ignorarId = null) {
+  const alvo = email.trim().toLowerCase();
+  return bancoUsuarios.some((u) => u.id !== ignorarId && u.email.toLowerCase() === alvo);
+}
+
+function validarDados({ nome, email }) {
+  if (!nome?.trim()) throw new Error('Informe o nome.');
+  if (!email?.trim()) throw new Error('Informe o e-mail.');
+}
+
 export const atendenteService = {
-  /** Lista todos os atendentes cadastrados (RF02). */
+  /** GET /atendentes */
   async listar() {
     await simularDelay();
-    return banco.map((a) => ({ ...a }));
-  },
-
-  /** Busca um atendente por id. */
-  async buscarPorId(id) {
-    await simularDelay();
-    const encontrado = banco.find((a) => a.id === id);
-    return encontrado ? { ...encontrado } : null;
+    const data = bancoUsuarios.filter((u) => u.perfil === 'atendente').map(semSenha);
+    return { data };
   },
 
   /**
-   * Cadastra um novo atendente (RF02).
-   * @param {{ nome, email, telefone }} dados
+   * POST /atendentes — Admin cadastra com senha inicial (RN05).
+   * O usuário nasce com primeiroAcessoPendente = true: a troca de senha é
+   * obrigatória no primeiro login.
+   * @param {{ nome, email, telefone, senhaInicial }} dados
    */
   async criar(dados) {
     await simularDelay();
-    if (banco.some((a) => a.email.toLowerCase() === dados.email.trim().toLowerCase())) {
-      throw new Error('Já existe um atendente com este e-mail.');
-    }
+    validarDados(dados);
+    if (!dados.senhaInicial) throw new Error('Defina a senha inicial.');
+    if (emailEmUso(dados.email)) throw new Error('Já existe um usuário com este e-mail.');
+
     const novo = {
       id: `atend-${Date.now()}`,
       nome: dados.nome.trim(),
       email: dados.email.trim(),
-      telefone: dados.telefone.trim(),
+      telefone: dados.telefone?.trim() || null,
       perfil: 'atendente',
       ativo: true,
-      criadoEm: new Date().toISOString(),
+      primeiroAcessoPendente: true,
+      createdAt: new Date().toISOString(),
+      senha: dados.senhaInicial, // só no mock — ver bancoUsuarios.js
     };
-    banco.push(novo);
-    return { ...novo };
+    bancoUsuarios.push(novo);
+    return { data: semSenha(novo) };
   },
 
-  /** Edita um atendente existente (RF02). */
+  /** PATCH /atendentes/:id — edita dados cadastrais (não mexe em senha). */
   async atualizar(id, dados) {
     await simularDelay();
-    const indice = banco.findIndex((a) => a.id === id);
-    if (indice === -1) throw new Error('Atendente não encontrado.');
-    const duplicado = banco.some(
-      (a) =>
-        a.id !== id &&
-        a.email.toLowerCase() === dados.email.trim().toLowerCase()
-    );
-    if (duplicado) throw new Error('Já existe um atendente com este e-mail.');
-    banco[indice] = { ...banco[indice], ...dados, email: dados.email.trim() };
-    return { ...banco[indice] };
+    validarDados(dados);
+    const atendente = encontrar(id);
+    if (emailEmUso(dados.email, id)) throw new Error('Já existe um usuário com este e-mail.');
+    atendente.nome = dados.nome.trim();
+    atendente.email = dados.email.trim();
+    atendente.telefone = dados.telefone?.trim() || null;
+    return { data: semSenha(atendente) };
   },
 
-  /** Remove (desativa) um atendente (RF02). */
-  async remover(id) {
+  /**
+   * POST /atendentes/:id/desativar — é assim que o contrato implementa o
+   * "Remover" do RF02: o usuário não é apagado (mantém o histórico das
+   * conversas que atendeu), só perde o acesso.
+   */
+  async desativar(id) {
     await simularDelay();
-    const indice = banco.findIndex((a) => a.id === id);
-    if (indice === -1) throw new Error('Atendente não encontrado.');
-    banco.splice(indice, 1);
-    return { ok: true };
+    const atendente = encontrar(id);
+    atendente.ativo = false;
+    return { data: semSenha(atendente) };
   },
 };

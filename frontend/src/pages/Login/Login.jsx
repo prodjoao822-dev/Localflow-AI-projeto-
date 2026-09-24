@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
-import Icone from '../../components/Icone/Icone';
+import Logo from '../../components/Logo/Logo';
+import TagPendencia from '../../components/TagPendencia/TagPendencia';
 import './Login.css';
 
+const DESTINO_APOS_LOGIN = '/atendimentos';
+
 /**
- * Tela 1 — Login (RF03).
- * Administrador e Atendente usam o mesmo formulário; o destino após o login
- * depende do perfil (admin -> /admin, atendente -> /painel).
+ * Tela de Login (RF03). Administrador e Atendente usam o mesmo formulário.
+ * Não existe cadastro público: quem cria Atendentes é o Administrador (RN05).
  *
- * NOTA: no MVP a autenticação é simulada (sem backend). As credenciais reais
- * virão do módulo IAM (JWT) — ver "Usuários de demonstração" no rodapé.
+ * Autenticação ainda simulada (authService). RNF01 — segurança real (hash +
+ * JWT) chega com o módulo IAM no backend, sem mudar esta tela.
  */
 export default function Login() {
   const { usuario, entrar } = useAuth();
@@ -21,58 +23,40 @@ export default function Login() {
   const [erro, setErro] = useState('');
   const [enviando, setEnviando] = useState(false);
 
-  if (usuario) {
-    return <Navigate to={usuario.perfil === 'admin' ? '/admin' : '/painel'} replace />;
+  if (usuario) return <Navigate to={DESTINO_APOS_LOGIN} replace />;
+
+  async function autenticar(emailInformado, senhaInformada) {
+    setErro('');
+    setEnviando(true);
+    try {
+      await entrar(emailInformado, senhaInformada);
+      navigate(DESTINO_APOS_LOGIN, { replace: true });
+    } catch (e) {
+      setErro(e.message || 'Não foi possível entrar.');
+    } finally {
+      setEnviando(false);
+    }
   }
 
-  async function aoSubmeter(evento) {
+  function aoSubmeter(evento) {
     evento.preventDefault();
-    setErro('');
-    setEnviando(true);
-    try {
-      const autenticado = await entrar(email, senha);
-      navigate(autenticado.perfil === 'admin' ? '/admin' : '/painel', { replace: true });
-    } catch (e) {
-      setErro(e.message || 'Não foi possível entrar.');
-    } finally {
-      setEnviando(false);
-    }
-  }
-
-  /** Acesso rápido de demonstração (usuários fictícios do mock). */
-  async function entrarComo(emailDemo, senhaDemo) {
-    setErro('');
-    setEnviando(true);
-    try {
-      const autenticado = await entrar(emailDemo, senhaDemo);
-      navigate(autenticado.perfil === 'admin' ? '/admin' : '/painel', { replace: true });
-    } catch (e) {
-      setErro(e.message || 'Não foi possível entrar.');
-    } finally {
-      setEnviando(false);
-    }
+    autenticar(email, senha);
   }
 
   return (
     <div className="login">
-      <div className="login-marca">
-        <span className="login-marca-quadro">LF</span>
-        <span className="login-marca-nome">LocalFlow AI</span>
+      <div className="login-cabecalho">
+        <Logo vertical />
+        <p className="login-subtitulo">Entre com sua conta para continuar</p>
       </div>
 
-      <form className="login-card" onSubmit={aoSubmeter}>
-        <h1 className="login-titulo">Entrar</h1>
-        <p className="login-subtitulo">
-          Acesso ao painel de atendimento da{' '}
-          <strong>Casa da Soleira</strong>.
-        </p>
-
-        <label className="login-campo">
-          <span>E-mail</span>
+      <form className="login-card" onSubmit={aoSubmeter} noValidate>
+        <label className="campo">
+          <span className="campo-rotulo">E-mail</span>
           <input
             type="email"
             className="input"
-            placeholder="voce@casadasoleira.com"
+            placeholder="voce@empresa.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="username"
@@ -80,9 +64,21 @@ export default function Login() {
           />
         </label>
 
-        <label className="login-campo">
-          <span>Senha</span>
+        <div className="campo">
+          <div className="login-senha-topo">
+            <label htmlFor="login-senha" className="campo-rotulo">Senha</label>
+            {/* [PENDENTE] Redefinição de senha não decidida (lacunas-e-decisoes 1.4) */}
+            <button
+              type="button"
+              className="btn-link"
+              disabled
+              title="[PENDENTE] Fluxo de redefinição de senha ainda não definido"
+            >
+              Esqueci minha senha
+            </button>
+          </div>
           <input
+            id="login-senha"
             type="password"
             className="input"
             placeholder="••••••••"
@@ -91,44 +87,51 @@ export default function Login() {
             autoComplete="current-password"
             required
           />
-        </label>
+        </div>
 
-        {erro && <div className="login-erro">{erro}</div>}
+        {erro && (
+          <p className="login-erro" role="alert">
+            {erro}
+          </p>
+        )}
 
-        <button type="submit" className="btn btn-primary login-enviar" disabled={enviando}>
+        <button
+          type="submit"
+          className="btn btn-primary login-enviar"
+          disabled={enviando || !email.trim() || !senha}
+        >
           {enviando ? 'Entrando…' : 'Entrar'}
         </button>
       </form>
 
-      <div className="login-demo">
-        <p className="login-demo-titulo">
-          <Icone nome="bot" size={15} />
-          Protótipo — usuários de demonstração
-        </p>
-        <div className="login-demo-botoes">
-          <button
-            type="button"
-            className="btn btn-secondary"
-            disabled={enviando}
-            onClick={() => entrarComo('joao@casadasoleira.com', '123456')}
-          >
-            Entrar como Atendente
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            disabled={enviando}
-            onClick={() => entrarComo('admin@casadasoleira.com', 'admin123')}
-          >
-            Entrar como Administrador
-          </button>
-        </div>
-      </div>
+      <p className="login-rodape">O cadastro de atendentes é feito pelo administrador da conta.</p>
 
-      <span className="pendencia-tag login-pendencia" title="RNF01 — autenticação segura fica para a etapa de IAM + JWT no backend.">
-        <span className="pendencia-dot" />
-        Autenticação simulada nesta etapa — RNF01 (segurança real fica no backend)
-      </span>
+      {/* Atalhos só em desenvolvimento (não fazem parte da tela validada) */}
+      {import.meta.env.DEV && (
+        <div className="login-demo">
+          <TagPendencia descricao="RNF01 — hash de senha + JWT chegam com o módulo IAM">
+            Protótipo — autenticação simulada
+          </TagPendencia>
+          <div className="login-demo-botoes">
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              disabled={enviando}
+              onClick={() => autenticar('joao@casadasoleira.com', '123456')}
+            >
+              Entrar como Atendente
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              disabled={enviando}
+              onClick={() => autenticar('admin@casadasoleira.com', 'admin123')}
+            >
+              Entrar como Administrador
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

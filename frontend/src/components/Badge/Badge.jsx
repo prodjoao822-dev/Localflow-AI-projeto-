@@ -1,11 +1,35 @@
+import Icone from '../Icone/Icone';
 import './Badge.css';
 
 /**
- * Rótulo de estado com tom visual. O tom é um mapa neutro de tokens de cor
- * (a hierarquia principal continua sendo tipografia).
- * @param {{ children, tone?: 'neutral'|'accent'|'success'|'warning'|'danger'|'ia' }} props
+ * Rótulo curto com tom semântico (estado, resultado, IA, status de usuário).
+ *
+ * @param {{
+ *   children: React.ReactNode,
+ *   tone?: 'neutral'|'info'|'warning'|'danger'|'success'|'ia',
+ *   pilula?: boolean,   // raio total — usado em status de usuário (Ativo/Inativo)
+ *   ponto?: boolean,    // bolinha antes do texto
+ * }} props
  */
-export default function Badge({ children, tone = 'neutral' }) {
+export default function Badge({ children, tone = 'neutral', pilula = false, ponto = false }) {
   if (!children) return null;
-  return <span className={`lf-badge lf-badge-${tone}`}>{children}</span>;
+  const classes = ['lf-badge', `lf-badge-${tone}`, pilula && 'lf-badge-pilula']
+    .filter(Boolean)
+    .join(' ');
+  return (
+    <span className={classes}>
+      {ponto && <span className="lf-badge-ponto" aria-hidden="true" />}
+      {children}
+    </span>
+  );
+}
+
+/** Tag "✦ IA" — marca o que foi feito pela IA (RN02: distinguível do humano). */
+export function TagIA() {
+  return (
+    <span className="lf-badge lf-badge-ia" title="Gerado pela IA">
+      <Icone nome="brilho" size={11} />
+      IA
+    </span>
+  );
 }

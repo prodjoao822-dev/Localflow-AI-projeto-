@@ -1,0 +1,47 @@
+.bolha-linha {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.bolha-ia,
+.bolha-atendente {
+  align-items: flex-end;
+}
+
+.bolha {
+  max-width: min(640px, 85%);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-body-lg);
+  line-height: 1.55;
+  color: var(--text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.bolha-cliente .bolha {
+  background: var(--bubble-cliente);
+}
+
+.bolha-ia .bolha {
+  background: var(--ia-soft);
+  border: 1px dashed var(--ia-border-strong);
+}
+
+.bolha-atendente .bolha {
+  background: var(--bubble-atendente);
+  border: 1px solid var(--bubble-atendente-border);
+}
+
+.bolha-autor {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  color: var(--status-atendimento-fg);
+}
+
+.bolha-hora {
+  font-size: var(--fs-caption);
+  color: var(--text-subtle);
+}

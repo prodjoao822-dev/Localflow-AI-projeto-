@@ -2,17 +2,31 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 1px 8px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.6;
+  height: var(--badge-h);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
   white-space: nowrap;
 }
 
-.lf-badge-neutral { background: var(--neutral-soft); color: var(--text-secondary); }
-.lf-badge-accent  { background: var(--accent-soft);  color: #1763b3; }
-.lf-badge-success { background: var(--success-soft); color: var(--success); }
-.lf-badge-warning { background: var(--warning-soft); color: #7a5600; }
-.lf-badge-danger  { background: var(--danger-soft);  color: var(--danger); }
-.lf-badge-ia      { background: var(--ia-soft);      color: #6336c5; }
+.lf-badge-pilula {
+  height: 26px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full);
+}
+
+.lf-badge-ponto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Tons → tokens semânticos */
+.lf-badge-neutral { background: var(--status-finalizada-soft); color: var(--status-finalizada-fg); }
+.lf-badge-info    { background: var(--status-atendimento-soft); color: var(--status-atendimento-fg); }
+.lf-badge-warning { background: var(--status-aguardando-soft); color: var(--status-aguardando-fg); }
+.lf-badge-danger  { background: var(--status-acao-soft); color: var(--status-acao-fg); }
+.lf-badge-success { background: var(--success-soft); color: var(--success-fg); }
+.lf-badge-ia      { background: var(--ia-soft); color: var(--ia-fg); }

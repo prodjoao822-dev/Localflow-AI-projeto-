@@ -3,21 +3,22 @@ import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './context/useAuth';
 import RotaProtegida from './components/RotaProtegida/RotaProtegida';
 import Login from './pages/Login/Login';
-import PainelAtendente from './pages/PainelAtendente/PainelAtendente';
-import PainelAdmin from './pages/PainelAdmin/PainelAdmin';
+import Atendimentos from './pages/Atendimentos/Atendimentos';
+import Atendentes from './pages/Atendentes/Atendentes';
 
 /**
  * Protótipo navegável — LocalFlow AI (MVP).
- * 3 telas: Login, Atendimento (fila + conversa unificadas em 3 colunas) e
- * Painel do Administrador. Rotas protegidas por autenticação simulada (mock).
+ * - /login         → Login (RF03)
+ * - /atendimentos  → fila + conversa + contexto em 3 colunas. Admin e Atendente
+ *                    (RN05: o Administrador também pode operar Conversas)
+ * - /configuracoes/atendentes → Gestão de Atendentes (RF02, só Admin)
  */
 
-/** Raiz: redireciona conforme a sessão. */
+/** Raiz: manda para o login ou para os atendimentos. */
 function Inicio() {
   const { usuario, carregando } = useAuth();
-  if (carregando) return <div style={{ padding: 40, color: 'var(--text-secondary)' }}>Carregando…</div>;
-  if (!usuario) return <Navigate to="/login" replace />;
-  return <Navigate to={usuario.perfil === 'admin' ? '/admin' : '/painel'} replace />;
+  if (carregando) return null;
+  return <Navigate to={usuario ? '/atendimentos' : '/login'} replace />;
 }
 
 export default function App() {
@@ -27,27 +28,22 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/login" element={<Login />} />
-
-          {/* Tela de Atendimento unificada (fila + thread + contexto em 3 colunas) */}
           <Route
-            path="/painel"
+            path="/atendimentos"
             element={
-              <RotaProtegida perfil="atendente">
-                <PainelAtendente />
+              <RotaProtegida>
+                <Atendimentos />
               </RotaProtegida>
             }
           />
-
-          {/* Painel do Administrador */}
           <Route
-            path="/admin"
+            path="/configuracoes/atendentes"
             element={
               <RotaProtegida perfil="admin">
-                <PainelAdmin />
+                <Atendentes />
               </RotaProtegida>
             }
           />
-
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
